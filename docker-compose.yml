@@ -1,0 +1,10 @@
+version: '3'
+services:
+  LingChair:
+    image: ???
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./config.json:/root/config.json
