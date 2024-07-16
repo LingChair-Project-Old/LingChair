@@ -13,7 +13,7 @@ class Main extends React.Component {
     render() {
         return (
             <div id="app-inner" style={{
-                'font-family': '-apple-system, system-ui, -webkit-system-font',
+                fontFamily: '-apple-system, system-ui, -webkit-system-font',
             }}>
                 <mdui-navigation-rail value="recent" alignment="center" style={{
                     height: 'calc(var(--lingchair-window-height) - 9px)',
@@ -31,7 +31,7 @@ class Main extends React.Component {
 
                 <div style={{
                     position: 'relative',
-                    'padding-left': 'inhert'
+                    paddingLeft: 'inhert'
                 }}>
                     <mdui-navigation-drawer contained placement="left" close-on-overlay-click open style={{
                         height: 'calc(var(--lingchair-window-height) - 9px)',
