@@ -16,7 +16,8 @@
   "scripts": {
     "start": "node ./src/starter.js",
     "build": "node ./src/builder.js",
-    "debug": "node ./index.js --build"
+    "debug": "node ./index.js --build",
+    "clear-http": "node ./index.js --clear-http"
   },
   "dependencies": {
     "express": "^4.19.2",
