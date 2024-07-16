@@ -111,7 +111,7 @@ class IoImpl {
      * @param { String } path 
      */
     static remove(f) {
-        fs.unlinkSync(f)
+        fs.rmSync(f, { recursive: true })
     }
     /**
      * 移动文件
