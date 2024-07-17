@@ -1,18 +1,21 @@
 class ChatLayout extends React.Component {
     static MsgView = class extends React.Component {
-
-        render() {
+        render(prop) {
+            const { headImage, senderName, extra } = prop ? prop : {}
             return (
-                <mdui-card variant="filled" style="width: 200px;height: 124px"></mdui-card>
+                <mdui-card variant="filled" style="width: 200px;height: 124px">{ senderName }</mdui-card>
             )
         }
     }
-    render() {
+    render(prop) {
         return (
             <div style={{
-                display: 'flex'
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
             }}>
-
+                { prop ? prop.children : null }
             </div>
         )
     }
