@@ -1,6 +1,5 @@
-import { showErrorImage } from '../utils.js'
-import ChatLayout from './ChatLayout.js'
 import Loading from './Loading.js'
+import ChatContainer from './ChatContainer.js'
 
 function openDrawer(toggle) {
     let i = $('mdui-navigation-drawer[placement=left]').get(0)
@@ -51,10 +50,7 @@ class Main extends React.Component {
                             </mdui-list>
                         </mdui-navigation-drawer>
 
-                        <ChatLayout>
-                            <ChatLayout.MsgView
-                                senderName="demo" />
-                        </ChatLayout>
+                        <ChatContainer id='ChatContainer' />
                     </div>
                 </div >
             </React.Suspense>
