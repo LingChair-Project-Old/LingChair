@@ -1,3 +1,8 @@
+/**
+ * 当图片加载错误时(onerror), 加载一张报错图片
+ * @param { String } src 图片链接
+ * @param { String } alt 文本提示
+ */
 function showErrorImage(src, alt) {
     if (!this.loadFailed) {
         this.loadFailed = true

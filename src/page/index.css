@@ -2,7 +2,3 @@ body {
     --lingchair-window-width: 0px;
     --lingchair-window-height: 0px;
 }
-
-:not(:defined) {
-    visibility: hidden;
-}
