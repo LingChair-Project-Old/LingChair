@@ -13,6 +13,14 @@ function showErrorImage(src, alt) {
 }
 
 /**
+ * 通过 UA 来侦测是否为移动端
+ * @returns { Boolean } bool 是否为移动端
+ */
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+}
+
+/**
  * 格式化时间文本
  * @param { String } format 欲格式化文本
  * @param { Date } date 日期对象
@@ -52,4 +60,5 @@ function formatDateTime(format, date) {
 export {
     showErrorImage,
     formatDateTime,
+    isMobile,
 }

@@ -1,4 +1,14 @@
+/**
+ * 对于没有使用 Flex 布局的元素提供动态调整 width 和 height 的方法
+ */
 body {
     --lingchair-window-width: 0px;
     --lingchair-window-height: 0px;
+}
+
+/**
+ * Target: 每一条消息元素
+ */
+#ChatContainer > * > * {
+    margin: 15px;
 }
