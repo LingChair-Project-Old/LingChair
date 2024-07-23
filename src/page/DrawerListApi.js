@@ -11,7 +11,6 @@ function handleRecentClick(e) {
     let type = a.targetType
 
     changeChatLayout(`lc_${type}_${id}`)
-    console.log(getCurrentChatLayout() .reactRef)
 }
 
 export {

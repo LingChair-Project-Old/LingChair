@@ -39,7 +39,7 @@ function ChatContainer(prop = {}) {
     }, [])
 
     return (
-        <div {...prop} ref={element}>{contentView}</div>
+        <div style={{ width: '100%', /* Flex布局可以直接用百分比 爽了~ */ }} {...prop} ref={element}>{contentView}</div>
     )
 }
 

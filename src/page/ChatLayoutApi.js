@@ -9,8 +9,7 @@ import { getCurrentChatLayout } from "./ChatContainerApi"
  * @param { String } obj.senderImage 发送者头像图片链接
  */
 function addMsg(obj) {
-    let e = getCurrentChatLayout()
-    $(e).appendTo(e)
+    getCurrentChatLayout().addMsg(obj)
 }
 
 export {
