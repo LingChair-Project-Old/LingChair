@@ -2,10 +2,11 @@ const babel = require("@babel/core")
 const io = require('./io')
 const CleanCSS = require('clean-css')
 const uglify = require('uglify-js')
-const { pino } = require("pino")
-const logger = pino(require('pino-pretty')())
+const logger = require('./logger')
 
 function compileJs(path) {
+    if (path.endsWith('.min.js'))
+        return io.open(path, 'r').pipe(io.open(path, 'w')).close()
     babel.transformFileAsync(path, {
         presets: [
             [
@@ -17,8 +18,8 @@ function compileJs(path) {
             "@babel/preset-react",
         ],
         targets: {
-            chrome: "84",
-            android: "84",
+            chrome: "67",
+            android: "67",
         },
     }).then(function (result) {
         let code = result.code
