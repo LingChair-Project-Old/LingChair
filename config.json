@@ -1,1 +1,0 @@
-{"http":{"pathName":"lingchair_http","https":{"enable":false,"key":"","cert":""},"port":8080,"bindAddress":""},"data":{"pathName":"lingchair_data"}}
