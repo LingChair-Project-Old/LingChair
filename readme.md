@@ -44,7 +44,7 @@ node index.js --build
 
 ## 配置
 
-请参考[这个文件](./blob/main/src/config.js)内的模板
+请参考[这个文件](./src/config.js)内的模板
 
 ## 制作背景
 
