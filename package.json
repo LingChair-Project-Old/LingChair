@@ -16,7 +16,7 @@
   "scripts": {
     "start": "node ./src/starter.js",
     "build": "node ./src/builder.js",
-    "debug": "node ./index.js --build",
+    "debug": "node ./index.js --build --skip-compile",
     "clear-http": "node ./index.js --clear-http"
   },
   "dependencies": {
