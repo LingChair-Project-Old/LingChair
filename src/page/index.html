@@ -24,16 +24,7 @@
   <div id="app"></div>
   <script src="extra.js"></script>
   <script src="events.js"></script>
-  <script>
-    ;(function () {
-        var src = './static/eruda.min.js';
-        if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
-        document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
-        document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
-    })();
-  </script>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="init.js"></script>
   <script>
     ;(async () => ReactDOM.createRoot(document.getElementById('app')).render((await requireES6((await requireES6('../utils.js')).isMobile() ? './layout/MainPhone.js' : './layout/MainPC.js'))()))()
   </script>
