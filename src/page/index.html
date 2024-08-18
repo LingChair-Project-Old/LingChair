@@ -26,7 +26,18 @@
   <script src="events.js"></script>
   <script src="init.js"></script>
   <script>
-    ;(async () => ReactDOM.createRoot(document.getElementById('app')).render((await requireES6((await requireES6('../utils.js')).isMobile() ? './layout/MainPhone.js' : './layout/MainPC.js'))()))()
+    ;(async function() {
+        const { isMobile } = await requireES6('./utils.js')
+        const MainPhone = await requireES6('./layout/MainPhone.js')
+        const MainPC = await requireES6('./layout/MainPC.js')
+        
+        const check = (a) => (a in window)
+        
+        if (check("mdui") && check("React") && check("ReactDOM") && check("jQuery"))
+            /* 警惕大坑：非编译而是直接调用得到的组件会无法正常使用 Hook，浪费了我半年时间 */
+            ReactDOM.createRoot($('#app').get(0)).render(React.createElement(isMobile() ? MainPhone : MainPC))
+        else document.body.innerHTML += (`页面缺失运行时必须脚本，请尝试重新加载或者检查是否被拦截！<br/><br/>依赖库导入状态：<br/>MDUI： ${check("mdui")}<br/>React： ${check("React")}<br/>ReactDOM： ${check("ReactDOM")}<br/>jQuery： ${check("jQuery")}`)
+    })()
   </script>
 </body>
 
