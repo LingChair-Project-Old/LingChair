@@ -1,5 +1,7 @@
 # LingChair
 
+***For English-speaker: This project isn't finished, multi languages is not supported now. I'm sorry with that.***
+
 铃之椅是一个轻量、可扩展且开源的即时消息项目
 
 ***本项目还在开发中，现诸多功能全部还未制作，如果需要请暂时使用 LingChair-V0***
