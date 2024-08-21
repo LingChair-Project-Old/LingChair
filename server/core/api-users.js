@@ -6,7 +6,7 @@
 
 const io = require("./iolib")
 const hash = require("./hashlib")
-const vals = require("./val")
+const vals = require("./vals")
 
 // 获取用户资料所在的路径
 let getUserPath = (name) => {
