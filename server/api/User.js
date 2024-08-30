@@ -12,7 +12,7 @@ const io = require('../core/io')
 
 const vals = require("../core/vals")
 
-let FriendTypeDef = {
+const FriendTypeDef = {
     /**
      * 好友ID
      * @type { String }
@@ -30,7 +30,7 @@ let FriendTypeDef = {
     nickName,
 }
 
-let GroupTypeDef = {
+const GroupTypeDef = {
     /**
      * 群聊ID
      * @type { String }
