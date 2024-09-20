@@ -39,7 +39,7 @@ io.mkdirs(vals.LINGCHAIR_GROUP_MESSAGE_DIR)
 io.mkdirs(vals.LINGCHAIR_SINGLE_MESSAGE_DIR)
 
 // 生成服务端配置文件
-if (!io.exists(vals.LINGCHAIR_SERVER_CONFIG_FILE)) io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "w").write(JSON.stringify({
+io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "w").checkExistsOrWriteJson(JSON.stringify({
     useHttps: false,
     port: 3601,
     bindAddress: "",
@@ -48,10 +48,10 @@ if (!io.exists(vals.LINGCHAIR_SERVER_CONFIG_FILE)) io.open(vals.LINGCHAIR_SERVER
         cert: "",
     },
 })).close()
-if (!io.exists(vals.LINGCHAIR_USERS_COUNT_FILE))
-    io.open(vals.LINGCHAIR_USERS_COUNT_FILE, "w").write("10000").close()
+
+io.open(vals.LINGCHAIR_USERS_COUNT_FILE, "w").checkExistsOrWrite("10000").close()
 
 // 加载服务端配置文件
-vals.LINGCHAIR_SERVER_CONFIG = JSON.parse(io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "r").read("*a"))
+vals.LINGCHAIR_SERVER_CONFIG = io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "r").readAllJsonAndClose()
 
 module.exports = vals

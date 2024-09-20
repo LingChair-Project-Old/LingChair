@@ -1,3 +1,8 @@
+/* 
+ * Simple File Access Library
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ */
+
 const fs = require('node:fs')
 
 /**
@@ -143,11 +148,11 @@ class IoImpl {
     }
     /**
      * 检查文件是否存在, 若无则写入, 有则忽略
-     * @param { Buffer || String } 写入数据
+     * @param { Buffer | String } 写入数据
      * @returns { IoImpl } 对象自身
      */
     checkExistsOrWrite(data) {
-        if (!IoImpl.exist(this.path))
+        if (!IoImpl.exists(this.path))
             this.writeAll(data)
         return this
     }
@@ -157,7 +162,7 @@ class IoImpl {
      * @returns { IoImpl } 对象自身
      */
     checkExistsOrWriteJson(data) {
-        if (!fs.existsSync(this.path))
+        if (!IoImpl.exists(this.path))
             this.writeAllJson(data)
         return this
     }
@@ -185,7 +190,7 @@ class IoImpl {
     }
     /**
      * 写入一个文件
-     * @param { Buffer || String } 写入数据
+     * @param { Buffer | String } 写入数据
      * @returns { IoImpl } 对象自身
      */
     writeAll(data) {

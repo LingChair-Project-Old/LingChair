@@ -3,52 +3,22 @@
  * 
  * Make a more colorful world...
  * 
- * License - Apache 2.0
+ * License - Apache License 2.0
  * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
-const io = require('../core/io')
+const io = require('../core/iolib')
 
 const vals = require("../core/vals")
+const { GroupTypeDef, FriendTypeDef } = require('./TypeDef')
+const MessageList = require('./MessageList')
 
-const FriendTypeDef = {
-    /**
-     * 好友ID
-     * @type { String }
-     */
-    id,
-    /**
-     * 添加此好友的时间戳
-     * @type { Number }
-     */
-    addedTime,
-    /**
-     * 好友昵称
-     * @type { String }
-     */
-    nickName,
-}
+module.exports = class User {
+    // ==================================================
+    //                     构造函数
+    // ==================================================
 
-const GroupTypeDef = {
-    /**
-     * 群聊ID
-     * @type { String }
-     */
-    id,
-    /**
-     * 创建此群时的时间戳
-     * @type { Number }
-     */
-    createdTime,
-    /**
-     * 群名称
-     * @type { String }
-     */
-    name,
-}
-
-class User {
     /**
      * 构造函数
      * @param { String } id 用户ID
@@ -99,6 +69,28 @@ class User {
     getDataPath() {
         return User.getDataPath(this.id)
     }
+
+    // ==================================================
+    //                     账号安全
+    // ==================================================
+
+    /**
+     * 注册用户配置
+     * @param { Object } param
+     * @param { String } param.nickName 昵称
+     * @param { String } param.passwd 客户端加密后的密码
+     */
+    register({nickName, passwd}) {
+        io.mkdirs(this.getDataPath())
+
+        this.userConfigFile.checkExistsOrWriteJson({
+            id: this.id,
+        }).writeAllJson({
+            passwd: passwd,
+            nickName: nickName,
+        })
+    }
+
     /**
      * 获取此账号的密码
      * @returns { String } 密码
@@ -107,6 +99,11 @@ class User {
     getPassword() {
         return this.userConfigFile.readAllJson().passwd
     }
+
+    // ==================================================
+    //                     账号资料
+    // ==================================================
+
     /**
      * 设置头像
      * @param { Buffer } bin 图片数据
@@ -140,8 +137,13 @@ class User {
     getNickName() {
         return this.userConfigFile.readAllJson().nickName
     }
+
+    // ==================================================
+    //                     联系人相关
+    // ==================================================
+
     /**
-     * 
+     * 获取联系人列表
      * @returns { contacts } 群聊和好友列表
      */
     getContacts() {
@@ -155,7 +157,7 @@ class User {
              * 群聊列表
              * @type { GroupTypeDef[] }
              */
-            groups: io.open(this.getDataPath() + '/groups.json', 'rw').readAllJsonAndClose()
+            groups: io.open(this.getDataPath() + '/groups.json', 'rw').readAllJsonAndClose(),
         }
         return contacts
     }
