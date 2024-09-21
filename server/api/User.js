@@ -94,7 +94,6 @@ module.exports = class User {
     /**
      * 获取此账号的密码
      * @returns { String } 密码
-     * @description 注意: 非明文, 是经过哈希运算的
      */
     getPassword() {
         return this.userConfigFile.readAllJson().passwd
