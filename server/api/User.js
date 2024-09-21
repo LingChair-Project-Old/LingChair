@@ -37,7 +37,7 @@ module.exports = class User {
      * @returns { io }
      */
     static openUserConfigFile(id) {
-        return io.open(this.getDataPath() + "/user.json", "rw")
+        return io.open(this.getDataPath(id) + "/user.json", "rw")
     }
     /**
      * 某个用户是否存在
