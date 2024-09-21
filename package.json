@@ -8,7 +8,9 @@
     "name": "MoonLeeeaf",
     "url": "https://github.com/MoonLeeeaf"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "node ./server/test.js"
+  },
   "dependencies": {
     "express": "^4.19.2"
   },
