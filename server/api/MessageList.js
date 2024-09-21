@@ -51,7 +51,7 @@ module.exports = class MessageList {
      * 获取消息列表文件夹目录
      * @returns { String } path
      */
-     getDataPath() {
+    getDataPath() {
         return MessageList.getDataPath(this.id)
     }
     /**
@@ -69,13 +69,10 @@ module.exports = class MessageList {
 
     /**
      * 添加一条消息到列表
-     * @param { Object } args
-     * @param { String } args.senderId 消息发送者
-     * @param { String } args.msg 消息内容
-     * @param { String } args.type 消息类型(默认文字)
+     * @param { MessageTypeDef } msg
      */
     append({ msg, type, senderId }) {
-        const countFile = io.open(this.getDataPath() + '/count', 'rw').checkExistsOrWrite(0)
+        const countFile = io.open(this.getDataPath() + '/count', 'rw').checkExistsOrWrite('0')
         let count = parseInt(countFile.readAll())
         count++
 
@@ -86,7 +83,7 @@ module.exports = class MessageList {
             time: Date.now(),
         }).close()
 
-        countFile.writeAll(count).close()
+        countFile.writeAll(count + '').close()
     }
     /**
      * 从最新开始, 获取历史消息
@@ -104,12 +101,12 @@ module.exports = class MessageList {
          */
         let histroy = []
 
-        if (count >= 1)
-            do {
-                histroy.unshift(io.open(this.getDataPath() + '/msg' + count, 'r').readAllJsonAndClose())
-                count--
-                limit--
-            } while (count > 0 || limit > 0)
+        do {
+            if (count <= 0 || limit <= 0) break
+            histroy.unshift(io.open(this.getDataPath() + '/msg' + count, 'r').readAllJsonAndClose())
+            count--
+            limit--
+        } while (true)
 
         return histroy
     }
