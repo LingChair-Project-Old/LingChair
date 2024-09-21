@@ -151,12 +151,12 @@ module.exports = class User {
              * 好友列表
              * @type { FriendTypeDef[] }
              */
-            friends: io.open(this.getDataPath() + '/friends.json', 'rw').readAllJsonAndClose(),
+            friends: io.open(this.getDataPath() + '/friends.json', 'rw').checkExistsOrWriteJson([]).readAllJsonAndClose(),
             /**
              * 群聊列表
              * @type { GroupTypeDef[] }
              */
-            groups: io.open(this.getDataPath() + '/groups.json', 'rw').readAllJsonAndClose(),
+            groups: io.open(this.getDataPath() + '/groups.json', 'rw').checkExistsOrWriteJson([]).readAllJsonAndClose(),
         }
         return contacts
     }
