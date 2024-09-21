@@ -11,7 +11,7 @@
 const io = require('../core/iolib')
 
 const vals = require("../core/vals")
-const { GroupTypeDef, FriendTypeDef } = require('./TypeDef')
+const { GroupTypeDef, FriendTypeDef, MessageTypeDef } = require('./TypeDef')
 const MessageList = require('./MessageList')
 
 module.exports = class User {
