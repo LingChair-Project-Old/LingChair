@@ -160,4 +160,37 @@ module.exports = class User {
         }
         return contacts
     }
+
+    // ==================================================
+    //                     消息功能
+    // ==================================================
+
+    /**
+     * 向某人发送消息
+     * @param { String | User } user 用户
+     * @param { MessageTypeDef } msg 消息
+     */
+    sendToUser(user, msg) {
+        if (!user instanceof User) user = new User(user)
+
+        let m = MessageList.fromSingle(this, user)
+
+        msg.senderId = user.id
+
+        m.append(msg)
+    }
+
+    /**
+     * 获取与某人的消息记录
+     * @param { String | User } user 用户
+     * @param { Object } param
+     * @param { Number } param.limit 获取数量
+     * @param { Number } param.offset 获取偏移
+     * @returns { MessageTypeDef[] } 消息列表
+     */
+    getMessageHistroyOfUser(user, param = {}) {
+        if (!user instanceof User) user = new User(user)
+
+        return MessageList.fromSingle(this, user).getHistroy(param)
+    }
 }
