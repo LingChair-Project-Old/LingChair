@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN" class="mdui-theme-auto">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <meta name="renderer" content="webkit" />
+
+    <!-- 字体 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- UI库 -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <title>铃之椅</title>
+</head>
+
+<body style="display: flex;">
+    <!-- 侧边导航栏 -->
+    <mdui-navigation-rail alignment="center">
+        <mdui-button-icon icon="menu" slot="top"></mdui-button-icon>
+        <mdui-navigation-rail-item icon="watch_later--outlined" active-icon="watch_later" alt="最近">
+        </mdui-navigation-rail-item>
+        <mdui-navigation-rail-item icon="contacts--outlined" active-icon="contacts" alt="联系人">
+        </mdui-navigation-rail-item>
+        <mdui-navigation-rail-item icon="account_circle--outlined" active-icon="account_circle" alt="我的">
+        </mdui-navigation-rail-item>
+        <mdui-button-icon icon="settings" slot="bottom"></mdui-button-icon>
+    </mdui-navigation-rail>
+
+    <div style="position: relative; overflow: hidden; width:100%; height: calc(var(--lc-height) - 16px)">
+        <!-- 侧边栏 -->
+        <mdui-navigation-drawer contained style="width: 22%;">
+            <mdui-button class="close">关闭侧边抽屉栏</mdui-button>
+        </mdui-navigation-drawer>
+
+        <div style="width:100%; height: 100%;">
+
+        </div>
+    </div>
+
+    <script>
+        window.onresize = function () {
+            document.body.style.setProperty('--lc-width', `${window.innerWidth}px`)
+            document.body.style.setProperty('--lc-height', `${window.innerHeight}px`)
+        }
+        window.onresize()
+    </script>
+
+</body>
+
+</html>
