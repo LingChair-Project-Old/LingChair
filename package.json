@@ -2,6 +2,7 @@
   "name": "lingchair",
   "description": "A simple, lightweight, scalable and open-source IM project.",
   "version": "0.0.0",
+  "private": true,
   "license": "Apache License 2.0",
   "author": {
     "name": "MoonLeeeaf",
