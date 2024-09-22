@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="zh-CN" class="mdui-theme-auto">
 
+<!--
+ * ©2024 The LingChair Project
+ * 
+ * Make a more colorful world...
+ * 
+ * License - Apache License 2.0
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ * Organization - @LingChair <https://github.com/LingChair>
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
@@ -11,41 +21,143 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
     <!-- UI库 -->
-    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
-    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@2/mdui.css">
+    <script src="https://cdn.jsdelivr.net/npm/mdui@2/mdui.global.js"></script>
+
+    <!-- 工具库 -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <title>铃之椅</title>
 </head>
 
 <body style="display: flex;">
     <!-- 侧边导航栏 -->
-    <mdui-navigation-rail alignment="center">
+    <mdui-navigation-rail alignment="center" class="侧边导航栏">
         <mdui-button-icon icon="menu" slot="top"></mdui-button-icon>
-        <mdui-navigation-rail-item icon="watch_later--outlined" active-icon="watch_later" alt="最近">
+
+        <mdui-navigation-rail-item icon="watch_later--outlined" active-icon="watch_later" alt="最近" show=".list_最近">
         </mdui-navigation-rail-item>
-        <mdui-navigation-rail-item icon="contacts--outlined" active-icon="contacts" alt="联系人">
+        <mdui-navigation-rail-item icon="contacts--outlined" active-icon="contacts" alt="联系人" show=".list_联系人">
         </mdui-navigation-rail-item>
-        <mdui-navigation-rail-item icon="account_circle--outlined" active-icon="account_circle" alt="我的">
+        <mdui-navigation-rail-item icon="favorite_border" active-icon="favorite" alt="关注" show=".list_关注">
         </mdui-navigation-rail-item>
+
         <mdui-button-icon icon="settings" slot="bottom"></mdui-button-icon>
+
+        <script>
+            $(`.侧边列表 > mdui-list`).hide()
+
+            $('.侧边导航栏').click(function (event) {
+                const v = event.target
+                if (v.tagName.toLowerCase() == 'mdui-navigation-rail-item') {
+                    $(`.侧边列表 > mdui-list`).hide()
+                    $($(v).attr('show')).show()
+                }
+            })
+
+            $(() => $('mdui-navigation-rail-item[show=".list_最近"]').click())
+        </script>
     </mdui-navigation-rail>
 
-    <div style="position: relative; overflow: hidden; width:100%; height: calc(var(--lc-height) - 16px)">
+    <div
+        style="position: relative; overflow: hidden; width:100%; height: calc(var(--lc-height) - 16px); display: flex;">
         <!-- 侧边栏 -->
-        <mdui-navigation-drawer contained style="width: 22%;">
-            <mdui-button class="close">关闭侧边抽屉栏</mdui-button>
-        </mdui-navigation-drawer>
+        <div class="侧边列表" style="width:22%;">
+            <!-- 最近 -->
+            <mdui-list class="list_最近">
+                <mdui-list-subheader>最近</mdui-list-subheader>
 
-        <div style="width:100%; height: 100%;">
+                <mdui-list-item rounded alignment="center" description="这是一个测试">
+                    满月娘娘
+                    <mdui-avatar slot="icon" src="https://avatars.githubusercontent.com/u/150461955?v=4"></mdui-avatar>
+                </mdui-list-item>
+                <mdui-list-item rounded alignment="center" description="这还是一个测试">
+                    满月叶
+                    <mdui-avatar slot="icon" src="https://avatars.githubusercontent.com/u/150461955?v=4"></mdui-avatar>
+                </mdui-list-item>
+
+            </mdui-list>
+            <style>
+                .侧边列表>*>mdui-list-item {
+                    margin: 5px;
+                }
+            </style>
+            <script>
+                $('.list_最近').click(function (event) {
+                    const v = event.target
+                    if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                        $('.list_最近 > mdui-list-item').attr('active', null)
+                        v.active = true
+                    }
+                })
+            </script>
+
+            <!-- 联系人 -->
+            <mdui-list class="list_联系人">
+                <mdui-list-subheader>好友</mdui-list-subheader>
+            </mdui-list>
+            <script>
+                $('.list_联系人').click(function (event) {
+                    const v = event.target
+                    if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                        $('.list_联系人 > mdui-list-item').attr('active', null)
+                        v.active = true
+                    }
+                })
+            </script>
+
+            <!-- 关注 -->
+            <mdui-list class="list_关注">
+                <mdui-list-subheader>关注</mdui-list-subheader>
+            </mdui-list>
+            <script>
+                $('.list_关注').click(function (event) {
+                    const v = event.target
+                    if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                        $('.list_关注 > mdui-list-item').attr('active', null)
+                        v.active = true
+                    }
+                })
+            </script>
 
         </div>
+
+        <!-- 聊天页面框架 -->
+        <mdui-layout-main contained style="height: 100%;">
+            <div style="height: 90%;"></div>
+
+            <!-- 消息编辑 - 更多 -->
+            <mdui-dropdown placement="top" class="消息编辑_更多选项">
+                <mdui-menu>
+                    <!-- style="z-index: 114514; position: absolute; bottom: 1%;" -->
+                    <mdui-menu-item>插入图片</mdui-menu-item>
+                </mdui-menu>
+            </mdui-dropdown>
+
+            <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
+                <mdui-button-icon class="更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
+                <mdui-button-icon slot="end-icon" icon="send"></mdui-button-icon>
+            </mdui-text-field>
+
+            <script>
+                $('.更多选项').click(() => $('.消息编辑_更多选项').attr('open', true))
+            </script>
+
+        </mdui-layout-main>
     </div>
 
+    <script>
+
+    </script>
+
+    <!-- 事件注册 -->
     <script>
         window.onresize = function () {
             document.body.style.setProperty('--lc-width', `${window.innerWidth}px`)
             document.body.style.setProperty('--lc-height', `${window.innerHeight}px`)
+
+            $('.消息编辑框').get(0).style.width = window.innerWidth - ($('.侧边导航栏').width() + $('.侧边列表').width()) - 40 + 'px'
         }
-        window.onresize()
+        $(() => window.onresize())
     </script>
 
 </body>
