@@ -161,7 +161,7 @@
                 $('.更多选项').click(() => $('.消息编辑_更多选项').attr('open', true))
             </script>
 
-        </mdui-layout-main>
+        </div>
     </div>
 
     <script>
@@ -175,6 +175,7 @@
             document.body.style.setProperty('--lc-height', `${window.innerHeight}px`)
 
             $('.消息编辑框').get(0).style.width = window.innerWidth - ($('.侧边导航栏').width() + $('.侧边列表').width()) - 40 + 'px'
+            $('.聊天显示框架_工具栏').get(0).style.marginLeft = $('.侧边导航栏').width() + $('.侧边列表').width() - 40 + 'px'
         }
         $(() => window.onresize())
     </script>
