@@ -82,11 +82,13 @@
                 }
             </style>
             <script>
+
                 $('.list_最近').click(function (event) {
                     const v = event.target
                     if (v.tagName.toLowerCase() == 'mdui-list-item') {
                         $('.list_最近 > mdui-list-item').attr('active', null)
                         v.active = true
+                        $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(v.innerText)
                     }
                 })
             </script>
