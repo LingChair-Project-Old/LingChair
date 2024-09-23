@@ -122,8 +122,17 @@
         </div>
 
         <!-- 聊天页面框架 -->
-        <mdui-layout-main contained style="height: 100%;">
-            <div style="height: 90%;"></div>
+        <div style="height: 100%;">
+            <mdui-top-app-bar class="聊天显示框架_工具栏" scroll-target=".聊天显示框架">
+                <mdui-top-app-bar-title style="font-size: calc(var(--mdui-typescale-title-medium-size) + 4px);"></mdui-top-app-bar-title>
+                
+                <div style="flex-grow: 1"></div>
+                
+                <mdui-button-icon icon="call"></mdui-button-icon>
+                <mdui-button-icon icon="more_vert"></mdui-button-icon>
+            </mdui-top-app-bar>
+
+            <div class="聊天显示框架" style="height: 90%;"></div>
 
             <!-- 消息编辑 - 更多 -->
             <mdui-dropdown placement="top" class="消息编辑_更多选项">
