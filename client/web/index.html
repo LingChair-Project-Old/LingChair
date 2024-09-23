@@ -136,9 +136,19 @@
 
             <!-- 消息编辑 - 更多 -->
             <mdui-dropdown placement="top" class="消息编辑_更多选项">
-                <mdui-menu>
-                    <!-- style="z-index: 114514; position: absolute; bottom: 1%;" -->
-                    <mdui-menu-item>插入图片</mdui-menu-item>
+                <mdui-menu style="position: absolute; bottom: 0;">
+                    <mdui-menu-item>
+                        插入图片
+                        <mdui-icon slot="icon" name="image"></mdui-icon>
+                    </mdui-menu-item>
+                    <mdui-menu-item>
+                        插入文件
+                        <mdui-icon slot="icon" name="attach_file"></mdui-icon>
+                    </mdui-menu-item>
+                    <mdui-menu-item>
+                        插入语音
+                        <mdui-icon slot="icon" name="keyboard_voice"></mdui-icon>
+                    </mdui-menu-item>
                 </mdui-menu>
             </mdui-dropdown>
 
