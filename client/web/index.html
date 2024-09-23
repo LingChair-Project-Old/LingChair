@@ -84,11 +84,15 @@
             <script>
 
                 $('.list_最近').click(function (event) {
-                    const v = event.target
-                    if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                        $('.list_最近 > mdui-list-item').attr('active', null)
-                        v.active = true
-                        $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(v.innerText)
+                    let v = event.target
+                    for (let i = 0; i < 3; i++) {
+                        if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                            $('.list_最近 > mdui-list-item').attr('active', null)
+                            v.active = true
+                            $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(v.innerText)
+                            break
+                        }
+                        v = v.parentNode
                     }
                 })
             </script>
@@ -99,10 +103,14 @@
             </mdui-list>
             <script>
                 $('.list_联系人').click(function (event) {
-                    const v = event.target
-                    if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                        $('.list_联系人 > mdui-list-item').attr('active', null)
-                        v.active = true
+                    let v = event.target
+                    for (let i = 0; i < 3; i++) {
+                        if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                            $('.list_联系人 > mdui-list-item').attr('active', null)
+                            v.active = true
+                            break
+                        }
+                        v = v.parentNode
                     }
                 })
             </script>
@@ -113,10 +121,14 @@
             </mdui-list>
             <script>
                 $('.list_关注').click(function (event) {
-                    const v = event.target
-                    if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                        $('.list_关注 > mdui-list-item').attr('active', null)
-                        v.active = true
+                    let v = event.target
+                    for (let i = 0; i < 3; i++) {
+                        if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                            $('.list_关注 > mdui-list-item').attr('active', null)
+                            v.active = true
+                            break
+                        }
+                        v = v.parentNode
                     }
                 })
             </script>
@@ -138,7 +150,7 @@
 
             <!-- 消息编辑 - 更多 -->
             <mdui-dropdown placement="top" class="消息编辑_更多选项">
-                <mdui-menu style="position: absolute; bottom: 0;">
+                <mdui-menu style="position: absolute; bottom: 2%;">
                     <mdui-menu-item>
                         插入图片
                         <mdui-icon slot="icon" name="image"></mdui-icon>
