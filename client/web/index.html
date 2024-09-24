@@ -137,19 +137,20 @@
 
         <!-- 聊天页面框架 -->
         <div style="height: 100%; width: 78%;">
-            
+
             <div>
                 <mdui-top-app-bar class="聊天显示框架_工具栏" scroll-target=".聊天显示框架">
-                    <mdui-top-app-bar-title style="font-size: calc(var(--mdui-typescale-title-medium-size) + 4px);"></mdui-top-app-bar-title>
-                    
+                    <mdui-top-app-bar-title style="font-size: calc(var(--mdui-typescale-title-medium-size) + 4px);">
+                    </mdui-top-app-bar-title>
+
                     <div style="flex-grow: 1"></div>
-                    
+
                     <mdui-button-icon icon="call"></mdui-button-icon>
                     <mdui-button-icon icon="more_vert"></mdui-button-icon>
                 </mdui-top-app-bar>
-    
+
                 <div class="聊天显示框架" style="height: 90%;"></div>
-    
+
                 <!-- 消息编辑 - 更多 -->
                 <mdui-dropdown placement="top" class="消息编辑_更多选项">
                     <mdui-menu style="position: absolute; bottom: 2%;">
@@ -167,12 +168,12 @@
                         </mdui-menu-item>
                     </mdui-menu>
                 </mdui-dropdown>
-    
+
                 <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
                     <mdui-button-icon class="更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
                     <mdui-button-icon slot="end-icon" icon="send"></mdui-button-icon>
                 </mdui-text-field>
-    
+
                 <script>
                     $('.更多选项').click(() => $('.消息编辑_更多选项').attr('open', true))
                     $('.聊天显示框架').parent().hide()
@@ -212,6 +213,7 @@
             .waiting-dialog {
                 z-index: 114514;
             }
+
             .waiting-dialog::part(body) {
                 overflow: hidden;
                 margin-top: 2px;
