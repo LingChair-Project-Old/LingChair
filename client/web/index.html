@@ -66,11 +66,11 @@
             <mdui-list class="list_最近">
                 <mdui-list-subheader>最近</mdui-list-subheader>
 
-                <mdui-list-item rounded alignment="center" description="这是一个测试">
+                <mdui-list-item rounded alignment="center" description="这是一个测试" user-id="">
                     满月娘娘
                     <mdui-avatar slot="icon" src="https://avatars.githubusercontent.com/u/150461955?v=4"></mdui-avatar>
                 </mdui-list-item>
-                <mdui-list-item rounded alignment="center" description="这还是一个测试">
+                <mdui-list-item rounded alignment="center" description="这还是一个测试" user-id="">
                     满月叶
                     <mdui-avatar slot="icon" src="https://avatars.githubusercontent.com/u/150461955?v=4"></mdui-avatar>
                 </mdui-list-item>
@@ -89,7 +89,7 @@
                         if (v.tagName.toLowerCase() == 'mdui-list-item') {
                             $('.list_最近 > mdui-list-item').attr('active', null)
                             v.active = true
-                            $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(v.innerText)
+                            ChatContainer.switchTo($(v).attr('user-id'), v.innerText)
                             break
                         }
                         v = v.parentNode
@@ -136,51 +136,73 @@
         </div>
 
         <!-- 聊天页面框架 -->
-        <div style="height: 100%;">
-            <mdui-top-app-bar class="聊天显示框架_工具栏" scroll-target=".聊天显示框架">
-                <mdui-top-app-bar-title style="font-size: calc(var(--mdui-typescale-title-medium-size) + 4px);"></mdui-top-app-bar-title>
-                
-                <div style="flex-grow: 1"></div>
-                
-                <mdui-button-icon icon="call"></mdui-button-icon>
-                <mdui-button-icon icon="more_vert"></mdui-button-icon>
-            </mdui-top-app-bar>
+        <div style="height: 100%; width: 78%;">
+            
+            <div>
+                <mdui-top-app-bar class="聊天显示框架_工具栏" scroll-target=".聊天显示框架">
+                    <mdui-top-app-bar-title style="font-size: calc(var(--mdui-typescale-title-medium-size) + 4px);"></mdui-top-app-bar-title>
+                    
+                    <div style="flex-grow: 1"></div>
+                    
+                    <mdui-button-icon icon="call"></mdui-button-icon>
+                    <mdui-button-icon icon="more_vert"></mdui-button-icon>
+                </mdui-top-app-bar>
+    
+                <div class="聊天显示框架" style="height: 90%;"></div>
+    
+                <!-- 消息编辑 - 更多 -->
+                <mdui-dropdown placement="top" class="消息编辑_更多选项">
+                    <mdui-menu style="position: absolute; bottom: 2%;">
+                        <mdui-menu-item>
+                            插入图片
+                            <mdui-icon slot="icon" name="image"></mdui-icon>
+                        </mdui-menu-item>
+                        <mdui-menu-item>
+                            插入文件
+                            <mdui-icon slot="icon" name="attach_file"></mdui-icon>
+                        </mdui-menu-item>
+                        <mdui-menu-item>
+                            插入语音
+                            <mdui-icon slot="icon" name="keyboard_voice"></mdui-icon>
+                        </mdui-menu-item>
+                    </mdui-menu>
+                </mdui-dropdown>
+    
+                <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
+                    <mdui-button-icon class="更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
+                    <mdui-button-icon slot="end-icon" icon="send"></mdui-button-icon>
+                </mdui-text-field>
+    
+                <script>
+                    $('.更多选项').click(() => $('.消息编辑_更多选项').attr('open', true))
+                    $('.聊天显示框架').parent().hide()
 
-            <div class="聊天显示框架" style="height: 90%;"></div>
+                    class ChatContainer {
+                        /**
+                         * 转到某人的聊天页面
+                         * @param { String } id 用户ID/群ID
+                         * @param { String } nick 用户昵称/群名称
+                         */
+                        static switchTo(id, nick) {
+                            $('.无聊天页面').hide()
+                            $('.聊天显示框架').parent().show()
 
-            <!-- 消息编辑 - 更多 -->
-            <mdui-dropdown placement="top" class="消息编辑_更多选项">
-                <mdui-menu style="position: absolute; bottom: 2%;">
-                    <mdui-menu-item>
-                        插入图片
-                        <mdui-icon slot="icon" name="image"></mdui-icon>
-                    </mdui-menu-item>
-                    <mdui-menu-item>
-                        插入文件
-                        <mdui-icon slot="icon" name="attach_file"></mdui-icon>
-                    </mdui-menu-item>
-                    <mdui-menu-item>
-                        插入语音
-                        <mdui-icon slot="icon" name="keyboard_voice"></mdui-icon>
-                    </mdui-menu-item>
-                </mdui-menu>
-            </mdui-dropdown>
+                            $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(nick)
+                        }
+                    }
 
-            <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
-                <mdui-button-icon class="更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
-                <mdui-button-icon slot="end-icon" icon="send"></mdui-button-icon>
-            </mdui-text-field>
+                    window.ChatContainer = ChatContainer
+                </script>
+            </div>
 
-            <script>
-                $('.更多选项').click(() => $('.消息编辑_更多选项').attr('open', true))
-            </script>
+            <div class="无聊天页面" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                <div style="align-self: center; display: flex; flex-direction: column; align-items: center;">
+                    <span style="font-size: calc(var(--mdui-typescale-title-medium-size) + 4px);">选择一个联系人以开始对话 :D</span>
+                </div>
+            </div>
 
         </div>
     </div>
-
-    <script>
-
-    </script>
 
     <!-- 事件注册 -->
     <script>
