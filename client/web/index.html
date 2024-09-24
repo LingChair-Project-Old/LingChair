@@ -204,6 +204,22 @@
         </div>
     </div>
 
+    <!-- 等待对话框 -->
+    <mdui-dialog class="waiting-dialog">
+        <mdui-circular-progress style="margin-left: 3px"></mdui-circular-progress>
+        <span style="margin-left: 20px; position: absolute; bottom: 38%;">稍等片刻...</span>
+        <style>
+            .waiting-dialog {
+                z-index: 114514;
+            }
+            .waiting-dialog::part(body) {
+                overflow: hidden;
+                margin-top: 2px;
+                margin-left: 2px;
+            }
+        </style>
+    </mdui-dialog>
+
     <!-- 事件注册 -->
     <script>
         window.onresize = function () {
