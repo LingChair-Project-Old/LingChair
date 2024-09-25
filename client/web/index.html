@@ -26,6 +26,7 @@
 
     <!-- 工具库 -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
     <title>铃之椅</title>
 </head>
 
@@ -152,8 +153,8 @@
                 <div class="聊天显示框架" style="height: 90%;"></div>
 
                 <!-- 消息编辑 - 更多 -->
-                <mdui-dropdown placement="top" class="消息编辑_更多选项">
-                    <mdui-menu style="position: absolute; bottom: 2%;">
+                <mdui-dropdown placement="bottom" class="消息编辑_更多选项">
+                    <mdui-menu style="margin-top: calc(var(--lc-height) - 150%);">
                         <mdui-menu-item>
                             插入图片
                             <mdui-icon slot="icon" name="image"></mdui-icon>
@@ -191,8 +192,6 @@
                             $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(nick)
                         }
                     }
-
-                    window.ChatContainer = ChatContainer
                 </script>
             </div>
 
@@ -239,6 +238,34 @@
     </mdui-dialog>
     <script>
         
+    </script>
+
+    <!-- 安全的数据储存 -->
+    <script>
+        let dataIsEmpty = !localStorage.lingchair_data || localStorage.lingchair_data == ''
+
+        const aes = {
+            enc: (m, k) => CryptoJS.AES.encrypt(m, k).toString(),
+            dec: (m, k) => CryptoJS.AES.decrypt(m, k).toString(CryptoJS.enc.Utf8),
+        }
+
+        let key = location.href + '_LingChair_满月姐姐'
+
+        if (dataIsEmpty) localStorage.lingchair_data = aes.enc('{}', key)
+
+        let _dec = aes.dec(localStorage.lingchair_data, key)
+        if(_dec == '') _dec = '{}'
+
+        const _data_cached = JSON.parse(_dec)
+        const data = new Proxy({}, {
+            get: (obj, k) => {
+                return _data_cached[k]
+            },
+            set: (obj, k, v) => {
+                _data_cached[k] = v
+                localStorage.lingchair_data = aes.enc(JSON.stringify(_data_cached), key)
+            },
+        })
     </script>
 
     <!-- 事件注册 -->
