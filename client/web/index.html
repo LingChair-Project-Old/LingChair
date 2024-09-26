@@ -27,7 +27,36 @@
     <!-- 工具库 -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
     <title>铃之椅</title>
+
+    <!-- 安全的数据储存 -->
+    <script>
+        let dataIsEmpty = !localStorage.lingchair_data || localStorage.lingchair_data == ''
+
+        const aes = {
+            enc: (m, k) => CryptoJS.AES.encrypt(m, k).toString(),
+            dec: (m, k) => CryptoJS.AES.decrypt(m, k).toString(CryptoJS.enc.Utf8),
+        }
+
+        let key = location.href + '_LingChair_满月姐姐'
+
+        if (dataIsEmpty) localStorage.lingchair_data = aes.enc('{}', key)
+
+        let _dec = aes.dec(localStorage.lingchair_data, key)
+        if (_dec == '') _dec = '{}'
+
+        const _data_cached = JSON.parse(_dec)
+        const data = new Proxy({}, {
+            get: (obj, k) => {
+                return _data_cached[k]
+            },
+            set: (obj, k, v) => {
+                _data_cached[k] = v
+                localStorage.lingchair_data = aes.enc(JSON.stringify(_data_cached), key)
+            },
+        })
+    </script>
 </head>
 
 <body style="display: flex;">
@@ -147,13 +176,42 @@
                     <div style="flex-grow: 1"></div>
 
                     <mdui-button-icon icon="call"></mdui-button-icon>
-                    <mdui-button-icon icon="more_vert"></mdui-button-icon>
+                    <mdui-button-icon icon="more_vert" class="聊天显示框架_工具栏_更多选项"></mdui-button-icon>
+
+                    <script>
+                        $('.聊天显示框架_工具栏_更多选项').click(() => $('.聊天显示框架_工具栏_更多选项_菜单').attr('open', true))
+                    </script>
+
+                    <!-- 聊天显示框架_工具栏 - 更多 -->
+                    <mdui-dropdown placement="top" class="聊天显示框架_工具栏_更多选项_菜单">
+                        <mdui-menu style="margin-top: calc(var(--lc-height) - 150%);">
+                            <mdui-menu-item>
+                                插入图片
+                                <mdui-icon slot="icon" name="image"></mdui-icon>
+                            </mdui-menu-item>
+                        </mdui-menu>
+                    </mdui-dropdown>
                 </mdui-top-app-bar>
 
                 <div class="聊天显示框架" style="height: 90%;"></div>
+                <script>
+                    class ChatContainer {
+                        /**
+                         * 转到某人的聊天页面
+                         * @param { String } id 用户ID/群ID
+                         * @param { String } nick 用户昵称/群名称
+                         */
+                        static switchTo(id, nick) {
+                            $('.无聊天页面').hide()
+                            $('.聊天显示框架').parent().show()
+
+                            $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(nick)
+                        }
+                    }
+                </script>
 
                 <!-- 消息编辑 - 更多 -->
-                <mdui-dropdown placement="bottom" class="消息编辑_更多选项">
+                <mdui-dropdown placement="bottom" class="消息编辑框_更多选项_菜单">
                     <mdui-menu style="margin-top: calc(var(--lc-height) - 150%);">
                         <mdui-menu-item>
                             插入图片
@@ -171,27 +229,13 @@
                 </mdui-dropdown>
 
                 <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
-                    <mdui-button-icon class="更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
+                    <mdui-button-icon class="消息编辑框_更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
                     <mdui-button-icon slot="end-icon" icon="send"></mdui-button-icon>
                 </mdui-text-field>
 
                 <script>
-                    $('.更多选项').click(() => $('.消息编辑_更多选项').attr('open', true))
+                    $('.消息编辑框_更多选项').click(() => $('.消息编辑框_更多选项_菜单').attr('open', true))
                     $('.聊天显示框架').parent().hide()
-
-                    class ChatContainer {
-                        /**
-                         * 转到某人的聊天页面
-                         * @param { String } id 用户ID/群ID
-                         * @param { String } nick 用户昵称/群名称
-                         */
-                        static switchTo(id, nick) {
-                            $('.无聊天页面').hide()
-                            $('.聊天显示框架').parent().show()
-
-                            $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(nick)
-                        }
-                    }
                 </script>
             </div>
 
@@ -220,52 +264,68 @@
             }
         </style>
     </mdui-dialog>
+    <script>
+        /**
+         * 展示等待对话框, 可复用
+         * @param { String } text
+         * @returns { Function } closeDialog
+         */
+        const showWaitingDialog = (text) => {
+            $('.waiting-dialog').attr('open', true).find('span').text(text)
+            return () => $('.waiting-dialog').attr('open', false)
+        }
+    </script>
 
     <!-- 初次使用对话框 -->
-    <mdui-dialog headline="欢迎!" description="铃之椅 是一个轻量、跨平台、简单易用且开源的即时通讯项目, 目前仍处于试验阶段. 欢迎浏览我们的主页: https://lingchair.github.io/introduce" class="example-action">
-        <mdui-button slot="action" variant="text">关闭</mdui-button>
+    <mdui-dialog headline="欢迎!"
+        description="铃之椅 是一个轻量、跨平台、简单易用且开源的即时通讯项目, 目前仍处于试验阶段. 欢迎浏览我们的主页: https://lingchair.github.io/introduce"
+        class="欢迎使用对话框">
+        <mdui-button slot="action" variant="text" onclick="$('.欢迎使用对话框').attr('open', false)">关闭</mdui-button>
     </mdui-dialog>
     <script>
+        if (!data.close_guide) $('.欢迎使用对话框').attr('open', true)
 
+        $('.欢迎使用对话框').one('closed', () => {
+            $('.输入服务地址对话框').attr('open', true)
+        })
     </script>
 
     <!-- 连接到服务对话框 -->
-    <mdui-dialog headline="连接到服务" description="铃之椅 是去中心化的, 你需要一个已有的服务来使用它, 且不同服务间数据并不相通. 如需了解更多, 请参考 https://github.com/LingChair/LingChair" class="example-action">
+    <mdui-dialog headline="连接到服务"
+        description="铃之椅 是去中心化的, 你需要一个已有的服务来使用它, 且不同服务间数据并不相通. 如需了解更多, 请参考 https://github.com/LingChair/LingChair"
+        class="输入服务地址对话框">
         <mdui-text-field label="节点命名" value="default"></mdui-text-field>
         <div style="height: 10px;"></div>
         <mdui-text-field label="服务地址"></mdui-text-field>
-        <mdui-button slot="action" variant="text">保存并连接</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.输入服务地址对话框').get(0).checkAvailable()">保存并连接</mdui-button>
     </mdui-dialog>
+
     <script>
-        
+        $('.输入服务地址对话框').get(0).checkAvailable = () => {
+            let c = showWaitingDialog("检查可用性...")
+
+            
+
+            data.server_list = [$('mdui-text-field[label="服务地址"').text()]
+        }
     </script>
 
-    <!-- 安全的数据储存 -->
+    <mdui-snackbar close-on-outside-click class="public-snackbar" onclosed="_showSnackBar_opening = false">
+    </mdui-snackbar>
     <script>
-        let dataIsEmpty = !localStorage.lingchair_data || localStorage.lingchair_data == ''
+        let _showSnackBar_opening
+        const showSnackBar = (text) => {
+            if (_showSnackBar_opening) {
+                $('.public-snackbar').attr('open', false).one('closed', () => {
+                    _showSnackBar_opening = false
+                    showSnackBar(text)
+                })
+                return
+            }
 
-        const aes = {
-            enc: (m, k) => CryptoJS.AES.encrypt(m, k).toString(),
-            dec: (m, k) => CryptoJS.AES.decrypt(m, k).toString(CryptoJS.enc.Utf8),
+            _showSnackBar_opening = true
+            $('.public-snackbar').text(text).attr('open', true)
         }
-
-        let key = location.href + '_LingChair_满月姐姐'
-
-        if (dataIsEmpty) localStorage.lingchair_data = aes.enc('{}', key)
-
-        let _dec = aes.dec(localStorage.lingchair_data, key)
-        if(_dec == '') _dec = '{}'
-
-        const _data_cached = JSON.parse(_dec)
-        const data = new Proxy({}, {
-            get: (obj, k) => {
-                return _data_cached[k]
-            },
-            set: (obj, k, v) => {
-                _data_cached[k] = v
-                localStorage.lingchair_data = aes.enc(JSON.stringify(_data_cached), key)
-            },
-        })
     </script>
 
     <!-- 事件注册 -->
