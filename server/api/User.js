@@ -8,13 +8,13 @@
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
-const io = require('../core/iolib')
+import io from '../core/iolib.js'
 
-const vals = require("../core/vals")
-const { GroupTypeDef, FriendTypeDef, MessageTypeDef } = require('./TypeDef')
-const MessageList = require('./MessageList')
+import vals from "../core/vals.js"
+import { GroupTypeDef, FriendTypeDef, MessageTypeDef } from './TypeDef.js'
+import MessageList from './MessageList.js'
 
-module.exports = class User {
+export default class User {
     // ==================================================
     //                     构造函数
     // ==================================================

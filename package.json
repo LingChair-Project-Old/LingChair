@@ -15,5 +15,5 @@
     "express": "^4.19.2",
     "socket.io": "^4.8.0"
   },
-  "type": "commonjs"
+  "type": "module"
 }

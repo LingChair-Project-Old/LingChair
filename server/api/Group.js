@@ -8,7 +8,7 @@
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
-module.exports = class Group {
+export default class Group {
     // ==================================================
     //                     构造函数
     // ==================================================

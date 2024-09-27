@@ -8,16 +8,16 @@
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
-const io = require('../core/iolib')
+import io from '../core/iolib.js'
 
-const vals = require("../core/vals")
+import vals from "../core/vals.js"
 
-const Group = require('./Group')
-const User = require('./User')
+import Group from './Group.js'
+import User from './User.js'
 
-const { MessageTypeDef } = require('./TypeDef')
+import { MessageTypeDef } from './TypeDef.js'
 
-module.exports = class MessageList {
+export default class MessageList {
     // ==================================================
     //                     构造函数
     // ==================================================

@@ -2,7 +2,7 @@
 //                      注册
 // ==================================================
 
-const User = require("./api/User")
+import User from "./api/User.js"
 
 let a = new User('满月')
 let b = new User('满月叶')

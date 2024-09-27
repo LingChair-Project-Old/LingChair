@@ -4,9 +4,9 @@
  * 哈希辅助类
  */
 
-const crypto = require("node:crypto")
+import crypto from "node:crypto"
 
-module.exports = {
+export default {
     /**
      * 生成 SHA256 哈希值
      * @param { String } data 

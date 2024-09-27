@@ -1,4 +1,4 @@
-const color = require("./color")
+import color from './colors.js'
 
 /**
  * 控制台输出

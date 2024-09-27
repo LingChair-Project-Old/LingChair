@@ -8,7 +8,7 @@
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
-module.exports.FriendTypeDef = {
+export const FriendTypeDef = {
     /**
      * 好友ID
      * @type { String }
@@ -26,7 +26,7 @@ module.exports.FriendTypeDef = {
     nickName: '',
 }
 
-module.exports.GroupTypeDef = {
+export const GroupTypeDef = {
     /**
      * 群聊ID
      * @type { String }
@@ -44,7 +44,7 @@ module.exports.GroupTypeDef = {
     name: '',
 }
 
-module.exports.MessageTypeDef = {
+export const MessageTypeDef = {
     /**
      * 消息内容
      * @type { String }

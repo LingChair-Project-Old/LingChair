@@ -3,7 +3,7 @@
  * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
  */
 
-const fs = require('node:fs')
+import fs from 'node:fs'
 
 /**
  * 简单文件类
@@ -246,4 +246,4 @@ class IoImpl {
     }
 }
 
-module.exports = IoImpl
+export default IoImpl

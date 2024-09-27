@@ -4,7 +4,7 @@
  * 铃之椅 Node 服务端
  */
 
-const io = require("./iolib")
+import io from './iolib.js'
 
 let vals = {}
 
@@ -54,4 +54,4 @@ io.open(vals.LINGCHAIR_USERS_COUNT_FILE, "w").checkExistsOrWrite("10000").close(
 // 加载服务端配置文件
 vals.LINGCHAIR_SERVER_CONFIG = io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "r").readAllJsonAndClose()
 
-module.exports = vals
+export default vals
