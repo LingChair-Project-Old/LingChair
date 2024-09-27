@@ -30,6 +30,48 @@
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
     <title>铃之椅</title>
 
+    <!-- 封装 -->
+    <script>
+        class Client {
+            static io
+            /**
+             * 初始化
+             * @param { String } addr
+             * @param { {transports: [], path: "", auth: {}} } options
+             */
+            static setup(addr, options) {
+                this.io = io(addr, options)
+            }
+            /**
+             * 提交事件
+             * @param { String } event
+             * @param { Object } args
+             * @param { Number } [timeout]
+             * @returns { Promise<Object> } response
+             */
+            static emit(event, args, timeout) {
+                return new Promise((res, rej) => {
+                    let a = this.io
+                    if (timeout) a = a.timeout(timeout * 1000)
+                    a.emit(event, args, (err, re) => {
+                        if (err) rej(err)
+                        res(re)
+                    })
+                })
+            }
+            /**
+             * 接收事件
+             * @param { String } eventName
+             * @param { Function<Object, Function<Object>> } callback
+             */
+            static on(eventName, callback) {
+                this.io.on(eventName, (arg, call) => {
+                    callback(arg, call)
+                })
+            }
+        }
+    </script>
+
     <!-- 安全的数据储存 -->
     <script>
         let dataIsEmpty = !localStorage.lingchair_data || localStorage.lingchair_data == ''
@@ -301,12 +343,21 @@
     </mdui-dialog>
 
     <script>
-        $('.输入服务地址对话框').get(0).checkAvailable = () => {
+        $('.输入服务地址对话框').get(0).checkAvailable = async () => {
             let c = showWaitingDialog("检查可用性...")
 
-            
+            let addr = $('mdui-text-field[label="服务地址"').text()
 
-            data.server_list = [$('mdui-text-field[label="服务地址"').text()]
+            Client.setup(addr)
+
+            try {
+                await Client.emit('ping', null, 3)
+
+                data.server_list = [addr]
+            } catch (e) {
+                showSnackBar('连接服务失败')
+                c()
+            }
         }
     </script>
 
@@ -324,7 +375,8 @@
             }
 
             _showSnackBar_opening = true
-            $('.public-snackbar').text(text).attr('open', true)
+            $('.public-snackbar').text(text).attr('open', true).one('closed', () => _showSnackBar_opening = false)
+    
         }
     </script>
 
