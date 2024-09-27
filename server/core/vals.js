@@ -1,7 +1,11 @@
 /* 
- * ©2024 满月叶
- * Github: MoonLeeeaf
- * 铃之椅 Node 服务端
+ * ©2024 The LingChair Project
+ * 
+ * Make a more colorful world...
+ * 
+ * License - Apache License 2.0
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ * Organization - @LingChair <https://github.com/LingChair>
  */
 
 import io from './iolib.js'

@@ -1,3 +1,8 @@
+/* 
+ * Simple Log Library
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ */
+
 import color from './colors.js'
 
 /**

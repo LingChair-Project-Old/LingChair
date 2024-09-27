@@ -1,7 +1,6 @@
 /* 
- * ©2024 满月叶
- * Github: MoonLeeeaf
- * 哈希辅助类
+ * Simple Hash Library
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
  */
 
 import crypto from "node:crypto"

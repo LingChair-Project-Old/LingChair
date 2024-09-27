@@ -1,3 +1,8 @@
+/* 
+ * Console ASCII Colors
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ */
+
 export default {
     /**
      * 清空效果
