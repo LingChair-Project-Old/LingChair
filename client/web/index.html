@@ -225,8 +225,9 @@
                     </script>
 
                     <!-- 聊天显示框架_工具栏 - 更多 -->
-                    <mdui-dropdown placement="top" class="聊天显示框架_工具栏_更多选项_菜单">
-                        <mdui-menu style="margin-top: calc(var(--lc-height) - 150%);">
+                    <mdui-dropdown placement="auto">
+                        <mdui-button-icon slot="trigger" icon="more_vert"></mdui-button-icon>
+                        <mdui-menu>
                             <mdui-menu-item>
                                 插入图片
                                 <mdui-icon slot="icon" name="image"></mdui-icon>
@@ -253,22 +254,23 @@
                 </script>
 
                 <!-- 消息编辑 - 更多 -->
-                <mdui-dropdown placement="bottom" class="消息编辑框_更多选项_菜单">
-                    <mdui-menu style="margin-top: calc(var(--lc-height) - 150%);">
-                        <mdui-menu-item>
-                            插入图片
-                            <mdui-icon slot="icon" name="image"></mdui-icon>
-                        </mdui-menu-item>
-                        <mdui-menu-item>
-                            插入文件
-                            <mdui-icon slot="icon" name="attach_file"></mdui-icon>
-                        </mdui-menu-item>
-                        <mdui-menu-item>
-                            插入语音
-                            <mdui-icon slot="icon" name="keyboard_voice"></mdui-icon>
-                        </mdui-menu-item>
-                    </mdui-menu>
-                </mdui-dropdown>
+                    <mdui-dropdown slot="icon" placement="auto">
+                        <mdui-button-icon slot="trigger" icon="more_vert"></mdui-button-icon>
+                        <mdui-menu>
+                            <mdui-menu-item>
+                                插入图片
+                                <mdui-icon slot="icon" name="image"></mdui-icon>
+                            </mdui-menu-item>
+                            <mdui-menu-item>
+                                插入文件
+                                <mdui-icon slot="icon" name="attach_file"></mdui-icon>
+                            </mdui-menu-item>
+                            <mdui-menu-item>
+                                插入语音
+                                <mdui-icon slot="icon" name="keyboard_voice"></mdui-icon>
+                            </mdui-menu-item>
+                        </mdui-menu>
+                    </mdui-dropdown>
 
                 <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
                     <mdui-button-icon class="消息编辑框_更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
