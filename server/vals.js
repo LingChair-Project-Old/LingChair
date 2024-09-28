@@ -1,10 +1,14 @@
 /* 
- * ©2024 满月叶
- * Github: MoonLeeeaf
- * 铃之椅 Node 服务端
+ * ©2024 The LingChair Project
+ * 
+ * Make a more colorful world...
+ * 
+ * License - Apache License 2.0
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ * Organization - @LingChair <https://github.com/LingChair>
  */
 
-import io from './iolib.js'
+import io from './libraries/iolib.js'
 
 let vals = {}
 
@@ -39,19 +43,22 @@ io.mkdirs(vals.LINGCHAIR_GROUP_MESSAGE_DIR)
 io.mkdirs(vals.LINGCHAIR_SINGLE_MESSAGE_DIR)
 
 // 生成服务端配置文件
-io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "w").checkExistsOrWriteJson(JSON.stringify({
+io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "w").checkExistsOrWriteJson({
     useHttps: false,
     port: 3601,
-    bindAddress: "",
+    bindAddress: "0.0.0.0",
     https: {
         key: "",
         cert: "",
     },
-})).close()
+}).close()
 
 io.open(vals.LINGCHAIR_USERS_COUNT_FILE, "w").checkExistsOrWrite("10000").close()
 
-// 加载服务端配置文件
+/**
+ * 服务端配置文件
+ * @type { {useHttps: false,port: 3601,bindAddress: "0.0.0.0",https: {key: "",cert: ""}} }
+ */
 vals.LINGCHAIR_SERVER_CONFIG = io.open(vals.LINGCHAIR_SERVER_CONFIG_FILE, "r").readAllJsonAndClose()
 
 export default vals

@@ -8,9 +8,9 @@
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
-import io from '../core/iolib.js'
+import io from '../libraries/iolib.js'
 
-import vals from "../core/vals.js"
+import vals from "../vals.js"
 
 import Group from './Group.js'
 import User from './User.js'

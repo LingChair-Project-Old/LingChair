@@ -8,9 +8,9 @@
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
-import io from '../core/iolib.js'
+import io from '../libraries/iolib.js'
 
-import vals from "../core/vals.js"
+import vals from "../vals.js"
 import { GroupTypeDef, FriendTypeDef, MessageTypeDef } from './TypeDef.js'
 import MessageList from './MessageList.js'
 

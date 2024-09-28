@@ -1,3 +1,8 @@
+/* 
+ * Simple Log Library
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ */
+
 import color from './colors.js'
 
 /**
@@ -24,8 +29,4 @@ const logw = (t) => {
     log(`[W] ${color.yellow + t + color.none}`)
 }
 
-module.exports = {
-    log: log,
-    loge: loge,
-    logw, logw,
-}
+export { log, loge, logw }

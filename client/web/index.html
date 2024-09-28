@@ -40,6 +40,9 @@
              * @param { {transports: [], path: "", auth: {}} } options
              */
             static setup(addr, options) {
+                if (this.io)
+                    this.io.disconnect()
+
                 this.io = io(addr, options)
             }
             /**
@@ -218,11 +221,6 @@
                     <div style="flex-grow: 1"></div>
 
                     <mdui-button-icon icon="call"></mdui-button-icon>
-                    <mdui-button-icon icon="more_vert" class="聊天显示框架_工具栏_更多选项"></mdui-button-icon>
-
-                    <script>
-                        $('.聊天显示框架_工具栏_更多选项').click(() => $('.聊天显示框架_工具栏_更多选项_菜单').attr('open', true))
-                    </script>
 
                     <!-- 聊天显示框架_工具栏 - 更多 -->
                     <mdui-dropdown placement="auto">
@@ -234,6 +232,7 @@
                             </mdui-menu-item>
                         </mdui-menu>
                     </mdui-dropdown>
+
                 </mdui-top-app-bar>
 
                 <div class="聊天显示框架" style="height: 90%;"></div>
@@ -253,7 +252,8 @@
                     }
                 </script>
 
-                <!-- 消息编辑 - 更多 -->
+                <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
+                    <!-- 消息编辑 - 更多 -->
                     <mdui-dropdown slot="icon" placement="auto">
                         <mdui-button-icon slot="trigger" icon="more_vert"></mdui-button-icon>
                         <mdui-menu>
@@ -271,14 +271,10 @@
                             </mdui-menu-item>
                         </mdui-menu>
                     </mdui-dropdown>
-
-                <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
-                    <mdui-button-icon class="消息编辑框_更多选项" slot="icon" icon="more_vert"></mdui-button-icon>
                     <mdui-button-icon slot="end-icon" icon="send"></mdui-button-icon>
                 </mdui-text-field>
 
                 <script>
-                    $('.消息编辑框_更多选项').click(() => $('.消息编辑框_更多选项_菜单').attr('open', true))
                     $('.聊天显示框架').parent().hide()
                 </script>
             </div>
@@ -336,28 +332,41 @@
 
     <!-- 连接到服务对话框 -->
     <mdui-dialog headline="连接到服务"
-        description="铃之椅 是去中心化的, 你需要一个已有的服务来使用它, 且不同服务间数据并不相通. 如需了解更多, 请参考 https://github.com/LingChair/LingChair"
+        description="铃之椅 是去中心化的, 你需要一个已有的服务来使用它, 且不同服务间数据并不相通. 后续可在设置中添加或切换. 如需了解更多, 请转到 https://github.com/LingChair/LingChair"
         class="输入服务地址对话框">
-        <mdui-text-field label="节点命名" value="default"></mdui-text-field>
-        <div style="height: 10px;"></div>
-        <mdui-text-field label="服务地址"></mdui-text-field>
-        <mdui-button slot="action" variant="text" onclick="$('.输入服务地址对话框').get(0).checkAvailable()">保存并连接</mdui-button>
+
+        <mdui-text-field label="服务地址(留空为当前域)" class="连接到服务_服务地址"></mdui-text-field>
+
+        <!-- <div style="height: 10px;"></div> -->
+
+        <!-- <div style="display: flex; align-items: center;"><span>HTTPS</span><div style="flex-grow: 0.98"></div><mdui-switch class="连接到服务_使用HTTPS" checked-icon=""></mdui-switch></div> -->
+        <mdui-button slot="action" variant="text" onclick="$('.输入服务地址对话框').get(0).checkAvailable()">连接并保存</mdui-button>
     </mdui-dialog>
 
+    <!-- 服务检查 以及初次填写 -->
     <script>
+
+
         $('.输入服务地址对话框').get(0).checkAvailable = async () => {
             let c = showWaitingDialog("检查可用性...")
 
-            let addr = $('mdui-text-field[label="服务地址"').text()
+            let addr = $('.连接到服务_服务地址').val()
+
+            addr = /^(http|ws)s?/.test(addr) || addr == "" ? addr : `http://${addr}`
 
             Client.setup(addr)
 
             try {
-                await Client.emit('ping', null, 3)
+                await Client.emit('lingchair.ping', {}, 3)
 
                 data.server_list = [addr]
+                data.current_server = addr
+
+                $('.输入服务地址对话框').attr('open', false)
+
+                c()
             } catch (e) {
-                showSnackBar('连接服务失败')
+                showSnackBar('连接服务失败: ' + e.message)
                 c()
             }
         }
@@ -378,7 +387,7 @@
 
             _showSnackBar_opening = true
             $('.public-snackbar').text(text).attr('open', true).one('closed', () => _showSnackBar_opening = false)
-    
+
         }
     </script>
 

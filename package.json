@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "private": true,
   "license": "Apache License 2.0",
+  "main": "./server/main.js",
   "author": {
     "name": "MoonLeeeaf",
     "url": "https://github.com/MoonLeeeaf"
   },
   "scripts": {
-    "test": "node ./server/test.js"
+    "start": "node ./server/main.js --start-server"
   },
   "dependencies": {
     "express": "^4.21.0",
