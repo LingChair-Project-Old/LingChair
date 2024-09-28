@@ -23,6 +23,10 @@ const app = express()
 
 app.use('/', express.static('./client/web/'))
 
+import User from './api/User.js'
+
+const app = express()
+
 app.put('/lingchair/user/:userId/username', (req, res) => {
     req.params.userId - req.headers['LingChair-Auth']
 })
