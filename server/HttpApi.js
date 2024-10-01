@@ -19,6 +19,29 @@ import vals from './vals.js'
 
 import { log, loge, logw } from './libraries/log.js'
 
+/**
+ * 检查成员参数是否全部存在
+ * @param { Object } object 
+ * @param { Array<String> } attrs 
+ * @returns { Boolean } allExists
+ */
+function checkArgv(object, attrs) {
+    for (const k of Object.keys(object)) {
+        if (!attrs.includes(attrs))
+            return false
+    }
+    return true
+}
+
+/**
+ * 返回一个错误数据
+ * @param { String } reason 
+ * @returns { Object } 数据
+ */
+function returnErrorApi(reason) {
+    return { msg: reason, code: -1 }
+}
+
 const app = express()
 
 app.use('/', express.static('./client/web/'))
@@ -60,10 +83,31 @@ io.on('connection', (client) => {
     log(`客户端 ${client.handshake.address} 已连接`)
 
     registerCallbacks(client, [
+        /**
+         * 通讯检测
+         */
         [
             "lingchair.ping",
             (_arg) => ({ msg: "success", code: 0}) ,
         ],
+        /**
+         * 用户登录
+         */
+        [
+            "lingchair.user.signIn",
+            /**
+             * 登录
+             * @param { Object } arg
+             * @param { String } arg.id 用户ID
+             * @param { String } arg.password 用户密码
+             * @returns { Object } successOrFailure
+             */
+            function(arg) {
+                if (!checkArgv(argv, ['id', 'password'])) return returnErrorApi("参数缺失")
+
+                
+            }
+        ]
     ])
 
     client.on('disconnect', () => {

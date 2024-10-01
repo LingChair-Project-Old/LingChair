@@ -153,6 +153,7 @@
                     src: "https://avatars.githubusercontent.com/u/150461955?v=4",
                     title: "测试",
                     description: "测试",
+                    prop: `user-id="${"test"}"`
                 }).appendTo(v)
 
                 return v
@@ -165,6 +166,7 @@
                 ListView.Item({
                     src: "https://avatars.githubusercontent.com/u/150461955?v=4",
                     title: "测试",
+                    prop: `user-id="${"test"}"`
                 }).appendTo(v)
 
                 return v
@@ -177,6 +179,7 @@
                 ListView.Item({
                     src: "https://avatars.githubusercontent.com/u/150461955?v=4",
                     title: "测试",
+                    prop: `user-id="${"test"}"`
                 }).appendTo(v)
 
                 return v
@@ -251,12 +254,15 @@
                 <div class="聊天显示框架" style="height: 90%;"></div>
                 <script>
                     class ChatContainer {
+                        static currentId
                         /**
                          * 转到某人的聊天页面
                          * @param { String } id 用户ID/群ID
                          * @param { String } nick 用户昵称/群名称
                          */
                         static switchTo(id, nick) {
+                            this.currentId = id
+
                             $('.无聊天页面').hide()
                             $('.聊天显示框架').parent().show()
 

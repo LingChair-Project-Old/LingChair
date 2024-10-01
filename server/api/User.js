@@ -78,15 +78,15 @@ export default class User {
      * 注册用户配置
      * @param { Object } param
      * @param { String } param.nickName 昵称
-     * @param { String } param.passwd 客户端加密后的密码
+     * @param { String } param.password 客户端加密后的密码
      */
-    register({nickName, passwd}) {
+    register({nickName, password}) {
         io.mkdirs(this.getDataPath())
 
         this.userConfigFile.checkExistsOrWriteJson({
             id: this.id,
         }).writeAllJson({
-            passwd: passwd,
+            password: password,
             nickName: nickName,
         })
     }
@@ -108,7 +108,7 @@ export default class User {
      * @param { Buffer } bin 图片数据
      */
     setAvatarImage(bin) {
-        io.open(this.getDataPath() + "/avatar", "w").writeAll(head).close()
+        io.open(this.getDataPath() + "/avatar", "w").writeAll(bin).close()
     }
     /**
      * 设置用户昵称
