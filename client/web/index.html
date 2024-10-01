@@ -28,6 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
+    <script src="adapter/ListView.js"></script>
     <title>铃之椅</title>
 
     <!-- 封装 -->
@@ -137,74 +138,86 @@
         style="position: relative; overflow: hidden; width:100%; height: calc(var(--lc-height) - 16px); display: flex;">
         <!-- 侧边栏 -->
         <div class="侧边列表" style="width:22%;">
-            <!-- 最近 -->
-            <mdui-list class="list_最近">
-                <mdui-list-subheader>最近</mdui-list-subheader>
 
-                <mdui-list-item rounded alignment="center" description="这是一个测试" user-id="">
-                    满月娘娘
-                    <mdui-avatar slot="icon" src="https://avatars.githubusercontent.com/u/150461955?v=4"></mdui-avatar>
-                </mdui-list-item>
-                <mdui-list-item rounded alignment="center" description="这还是一个测试" user-id="">
-                    满月叶
-                    <mdui-avatar slot="icon" src="https://avatars.githubusercontent.com/u/150461955?v=4"></mdui-avatar>
-                </mdui-list-item>
-
-            </mdui-list>
             <style>
                 .侧边列表>*>mdui-list-item {
                     margin: 5px;
                 }
             </style>
-            <script>
 
-                $('.list_最近').click(function (event) {
-                    let v = event.target
-                    for (let i = 0; i < 3; i++) {
-                        if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                            $('.list_最近 > mdui-list-item').attr('active', null)
-                            v.active = true
-                            ChatContainer.switchTo($(v).attr('user-id'), v.innerText)
-                            break
-                        }
-                        v = v.parentNode
-                    }
-                })
+            <!-- 最近 -->
+            <script view>
+                const v = ListView(`class="list_最近"`, "最近")
+
+                ListView.Item({
+                    src: "https://avatars.githubusercontent.com/u/150461955?v=4",
+                    title: "测试",
+                    description: "测试",
+                }).appendTo(v)
+
+                return v
             </script>
 
             <!-- 联系人 -->
-            <mdui-list class="list_联系人">
-                <mdui-list-subheader>好友</mdui-list-subheader>
-            </mdui-list>
-            <script>
-                $('.list_联系人').click(function (event) {
-                    let v = event.target
-                    for (let i = 0; i < 3; i++) {
-                        if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                            $('.list_联系人 > mdui-list-item').attr('active', null)
-                            v.active = true
-                            break
-                        }
-                        v = v.parentNode
-                    }
-                })
+            <script view>
+                const v = ListView(`class="list_联系人"`, "联系人")
+
+                ListView.Item({
+                    src: "https://avatars.githubusercontent.com/u/150461955?v=4",
+                    title: "测试",
+                }).appendTo(v)
+
+                return v
             </script>
 
             <!-- 关注 -->
-            <mdui-list class="list_关注">
-                <mdui-list-subheader>关注</mdui-list-subheader>
-            </mdui-list>
+            <script view>
+                const v = ListView(`class="list_关注"`, "关注")
+
+                ListView.Item({
+                    src: "https://avatars.githubusercontent.com/u/150461955?v=4",
+                    title: "测试",
+                }).appendTo(v)
+
+                return v
+            </script>
+
             <script>
-                $('.list_关注').click(function (event) {
-                    let v = event.target
-                    for (let i = 0; i < 3; i++) {
-                        if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                            $('.list_关注 > mdui-list-item').attr('active', null)
-                            v.active = true
-                            break
+                $(function () {
+                    $('.list_最近').click(function (event) {
+                        let v = event.target
+                        for (let i = 0; i < 3; i++) {
+                            if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                                $('.list_最近 > mdui-list-item').attr('active', null)
+                                v.active = true
+                                ChatContainer.switchTo($(v).attr('user-id'), v.innerText)
+                                break
+                            }
+                            v = v.parentNode
                         }
-                        v = v.parentNode
-                    }
+                    })
+
+                    $('.list_联系人').click(function (event) {
+                        let v = event.target
+                        for (let i = 0; i < 3; i++) {
+                            if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                                
+                                break
+                            }
+                            v = v.parentNode
+                        }
+                    })
+
+                    $('.list_关注').click(function (event) {
+                        let v = event.target
+                        for (let i = 0; i < 3; i++) {
+                            if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                                
+                                break
+                            }
+                            v = v.parentNode
+                        }
+                    })
                 })
             </script>
 
@@ -401,6 +414,10 @@
             $('.聊天显示框架_工具栏').get(0).style.marginLeft = $('.侧边导航栏').width() + $('.侧边列表').width() - 40 + 'px'
         }
         $(() => window.onresize())
+
+        $('script[view]').each(function (index, e) {
+            $(e).replaceWith(new Function($(e).html())())
+        })
     </script>
 
 </body>
