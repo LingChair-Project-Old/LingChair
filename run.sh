@@ -1,1 +1,1 @@
-node server_src/main.js
+node server/main.js
