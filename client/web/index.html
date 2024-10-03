@@ -93,6 +93,10 @@
         if (_dec == '') _dec = '{}'
 
         const _data_cached = JSON.parse(_dec)
+
+        /**
+         * @type { { server_list: [], current_server: "", close_guide: false, current_user: '' } }
+         */
         const data = new Proxy({}, {
             get: (obj, k) => {
                 return _data_cached[k]
@@ -204,7 +208,7 @@
                         let v = event.target
                         for (let i = 0; i < 3; i++) {
                             if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                                
+
                                 break
                             }
                             v = v.parentNode
@@ -215,7 +219,7 @@
                         let v = event.target
                         for (let i = 0; i < 3; i++) {
                             if (v.tagName.toLowerCase() == 'mdui-list-item') {
-                                
+
                                 break
                             }
                             v = v.parentNode
@@ -349,6 +353,33 @@
         })
     </script>
 
+    
+
+    <!-- 登录对话框 -->
+    <mdui-dialog headline="登录" description="提示: 不同服务节点间的数据不相通" class="登录对话框">
+
+        <mdui-text-field label="账号" class="登录_账号"></mdui-text-field>
+        <div style="height: 10px;"></div>
+        <mdui-text-field label="密码" class="登录_密码"></mdui-text-field>
+
+        <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').attr('open', true)">切换服务</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="User">注册</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.输入服务地址对话框').get(0).checkAvailable()">登录</mdui-button>
+    </mdui-dialog>
+
+    <script>
+        if (data.current_server != null && data.current_user == null) {
+            $('.登录对话框').attr('open', true)
+        }
+    </script>
+    
+    <!-- 临时切换服务对话框 -->
+    <mdui-dialog headline="临时切换服务" class="临时切换服务对话框">
+        <mdui-text-field label="服务地址(留空为当前域)" class="临时切换服务_服务地址"></mdui-text-field>
+
+        <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').get(0).checkAvailable()">连接</mdui-button>
+    </mdui-dialog>
+
     <!-- 连接到服务对话框 -->
     <mdui-dialog headline="连接到服务"
         description="铃之椅 是去中心化的, 你需要一个已有的服务来使用它, 且不同服务间数据并不相通. 后续可在设置中添加或切换. 如需了解更多, 请转到 https://github.com/LingChair/LingChair"
@@ -364,7 +395,28 @@
 
     <!-- 服务检查 以及初次填写 -->
     <script>
+        $('.临时切换服务对话框').get(0).checkAvailable = async () => {
+            let c = showWaitingDialog("检查可用性...")
 
+            let addr = $('.临时切换服务_服务地址').val()
+
+            addr = /^(http|ws)s?/.test(addr) || addr == "" ? addr : `http://${addr}`
+
+            Client.setup(addr)
+
+            try {
+                await Client.emit('lingchair.ping', {}, 3)
+
+                data.current_server = addr
+
+                $('.临时切换服务对话框').attr('open', false)
+
+                c()
+            } catch (e) {
+                showSnackBar('连接服务失败: ' + e.message)
+                c()
+            }
+        }
 
         $('.输入服务地址对话框').get(0).checkAvailable = async () => {
             let c = showWaitingDialog("检查可用性...")
@@ -383,7 +435,9 @@
 
                 $('.输入服务地址对话框').attr('open', false)
 
-                c()
+                data.close_guide = true
+
+                window.location.reload()
             } catch (e) {
                 showSnackBar('连接服务失败: ' + e.message)
                 c()
