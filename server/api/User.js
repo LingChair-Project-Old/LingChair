@@ -87,7 +87,7 @@ export default class User {
             id: this.id,
         }).writeAllJson({
             password: password,
-            nickName: nickName,
+            nickName: nickName ? nickName : this.id,
         })
     }
 

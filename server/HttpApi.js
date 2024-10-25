@@ -107,6 +107,31 @@ io.on('connection', (client) => {
 
                 
             }
+        ],
+        /**
+         * 用户注册
+         */
+         [
+            "lingchair.user.signUp",
+            /**
+             * 注册
+             * @param { Object } arg
+             * @param { String } arg.id 用户ID
+             * @param { String } arg.password 用户密码
+             * @param { String } [arg.nickName] 用户昵称
+             * @returns { Object } successOrFailure
+             */
+            function(arg) {
+                if (!checkArgv(arg, ['id', 'password'])) return returnErrorApi("参数缺失")
+
+                let u = new User(arg.id)
+                u.register(arg.nickName, arg.password)
+
+                return {
+                    msg: 'success',
+                    code: 0,
+                }
+            }
         ]
     ])
 

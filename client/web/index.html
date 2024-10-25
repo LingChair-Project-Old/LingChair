@@ -32,49 +32,7 @@
     <title>铃之椅</title>
 
     <!-- 封装 -->
-    <script>
-        class Client {
-            static io
-            /**
-             * 初始化
-             * @param { String } addr
-             * @param { {transports: [], path: "", auth: {}} } options
-             */
-            static setup(addr, options) {
-                if (this.io)
-                    this.io.disconnect()
-
-                this.io = io(addr, options)
-            }
-            /**
-             * 提交事件
-             * @param { String } event
-             * @param { Object } args
-             * @param { Number } [timeout]
-             * @returns { Promise<Object> } response
-             */
-            static emit(event, args, timeout) {
-                return new Promise((res, rej) => {
-                    let a = this.io
-                    if (timeout) a = a.timeout(timeout * 1000)
-                    a.emit(event, args, (err, re) => {
-                        if (err) rej(err)
-                        res(re)
-                    })
-                })
-            }
-            /**
-             * 接收事件
-             * @param { String } eventName
-             * @param { Function<Object, Function<Object>> } callback
-             */
-            static on(eventName, callback) {
-                this.io.on(eventName, (arg, call) => {
-                    callback(arg, call)
-                })
-            }
-        }
-    </script>
+    <script src="api/Client.js"></script>
 
     <!-- 安全的数据储存 -->
     <script>
@@ -363,14 +321,25 @@
         <mdui-text-field label="密码" class="登录_密码"></mdui-text-field>
 
         <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').attr('open', true)">切换服务</mdui-button>
-        <mdui-button slot="action" variant="text" onclick="User">注册</mdui-button>
-        <mdui-button slot="action" variant="text" onclick="$('.输入服务地址对话框').get(0).checkAvailable()">登录</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.登录对话框').get(0).signUp()">注册</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.登录对话框').get(0)">登录</mdui-button>
     </mdui-dialog>
 
     <script>
         if (data.current_server != null && data.current_user == null) {
+            Client.setup(data.current_server)
             $('.登录对话框').attr('open', true)
         }
+
+        $('.登录对话框').get(0).signUp = async () => {
+            let re = await IUser.asAPI($('.登录_账号').val()).signUp({ 
+                password: $('.登录_密码').val()
+            })
+
+            if (re.code != 0)
+                return showSnackBar("注册失败: " + re.msg)
+        }
+        
     </script>
     
     <!-- 临时切换服务对话框 -->
