@@ -27,7 +27,7 @@ import { log, loge, logw } from './libraries/log.js'
  */
 function checkArgv(object, attrs) {
     for (const k of Object.keys(object)) {
-        if (!attrs.includes(attrs))
+        if (!attrs.includes(k))
             return false
     }
     return true
@@ -69,12 +69,17 @@ function registerCallbacks(client, funcList) {
             const cb = args[args.length - 1]
             const arg = args[0]
 
-            if (arg instanceof Object) {
-                const re = func(arg)
-                log(`客户端 ${client.handshake.address} 请求 [${funcName}] with args ${JSON.stringify(arg).substring(0, 100)}`)
-                cb(re)
-            } else
-                logw(`客户端 ${client.handshake.address} 对 [${funcName}] 进行无效请求`)
+            try {
+                if (arg instanceof Object) {
+                 const re = func(arg)
+                 log(`客户端 ${client.handshake.address} 请求 [${funcName}] with args ${JSON.stringify(arg).substring(0, 100)}, returned ${JSON.stringify(re).substring(0, 100)}`)
+                 cb(re)
+             } else
+                   logw(`客户端 ${client.handshake.address} 对 [${funcName}] 进行无效请求`)
+            } catch(e) {
+                loge(e)
+                cb(returnErrorApi(e + ""))
+            }
         })
     }
 }
@@ -125,7 +130,11 @@ io.on('connection', (client) => {
                 if (!checkArgv(arg, ['id', 'password'])) return returnErrorApi("参数缺失")
 
                 let u = new User(arg.id)
-                u.register(arg.nickName, arg.password)
+                if (u.exists()) return returnErrorApi('用户已存在')
+                u.register({
+                    nickName: arg.nickName,
+                    password: arg.password,
+                })
 
                 return {
                     msg: 'success',

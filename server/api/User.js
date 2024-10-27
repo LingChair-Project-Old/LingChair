@@ -80,14 +80,14 @@ export default class User {
      * @param { String } param.nickName 昵称
      * @param { String } param.password 客户端加密后的密码
      */
-    register({nickName, password}) {
+    register(param) {
         io.mkdirs(this.getDataPath())
 
         this.userConfigFile.checkExistsOrWriteJson({
             id: this.id,
         }).writeAllJson({
-            password: password,
-            nickName: nickName ? nickName : this.id,
+            password: param.password,
+            nickName: param.nickName ? param.nickName : this.id,
         })
     }
 
