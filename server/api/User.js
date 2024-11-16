@@ -96,7 +96,16 @@ export default class User {
      * @returns { String } 密码
      */
     getPassword() {
-        return this.userConfigFile.readAllJson().passwd
+        return this.userConfigFile.readAllJson().password
+    }
+
+    /**
+     * 与此账号的密码对比
+     * @param { String } password
+     * @returns { Boolean } 是否正确
+     */
+    compareWithPassword(password) {
+        return password === this.getPassword()
     }
 
     // ==================================================

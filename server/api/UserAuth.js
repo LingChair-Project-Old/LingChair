@@ -38,10 +38,33 @@ export default class UserAuth {
      * 通过用户ID和密码 获取一个访问令牌
      * @param { String } id 
      * @param { String } password 
+     * @param { Number } [time]
      * @returns { String } accessToken
      */
-    static makeAccessToken(id, password) {
-        const d = formatDate(new Date().getTime(), 'YYYY-MM-dd')
-        return Hash.sha256(password + id + d) + Hash.md5(id + d)
+    static makeAccessToken(id, password, time = new Date().getTime()) {
+        const d = formatDate(time, 'YYYY_MM')
+        return Hash.sha256(password + id + d) + Hash.md5(id + d) + '_' + d
+    }
+    /**
+     * 获取一个更新的令牌
+     * @param { String } id 
+     * @param { String } accessToken 
+     * @returns { Boolean } isAccessTokenAvailable
+     */
+    static makeNewerToken(id, accessToken) {
+        if (this.checkAvailable(id, accessToken)) {
+            let _ = accessToken.split('_')
+            let year = parseInt(_[1])
+            let month = parseInt(_[2]) + 1
+            if (month > 12) {
+                month = 1
+                year++
+            }
+            
+            let d = new Date()
+            d.setFullYear(year)
+            d.setMonth(month)
+            return this.makeAccessToken(id, new User(id).getPassword(), d.getTime())
+        }
     }
 }

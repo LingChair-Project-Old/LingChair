@@ -18,6 +18,7 @@ import User from './api/User.js'
 import vals from './vals.js'
 
 import { log, loge, logw } from './libraries/log.js'
+import UserAuth from './api/UserAuth.js'
 
 /**
  * 检查成员参数是否全部存在
@@ -27,7 +28,7 @@ import { log, loge, logw } from './libraries/log.js'
  */
 function checkArgv(object, attrs) {
     for (const k of Object.keys(object)) {
-        if (!attrs.includes(k))
+        if (!attrs.includes(k) || attrs[k] == '')
             return false
     }
     return true
@@ -39,7 +40,15 @@ function checkArgv(object, attrs) {
  * @returns { Object } 数据
  */
 function returnErrorApi(reason) {
-    return { msg: reason, code: -1 }
+    return { msg: reason, code: 5 }
+}
+
+/**
+ * 返回一个无效令牌数据
+ * @returns { Object } 数据
+ */
+ function returnToken401Api() {
+    return { msg: '令牌无效', code: -401 }
 }
 
 const app = express()
@@ -95,6 +104,9 @@ io.on('connection', (client) => {
             "lingchair.ping",
             (_arg) => ({ msg: "success", code: 0}) ,
         ],
+        /** =================================================
+         *                        用户
+         * ================================================== */
         /**
          * 用户登录
          */
@@ -108,9 +120,18 @@ io.on('connection', (client) => {
              * @returns { Object } successOrFailure
              */
             function(arg) {
-                if (!checkArgv(argv, ['id', 'password'])) return returnErrorApi("参数缺失")
+                if (!checkArgv(arg, ['id', 'password'])) return returnErrorApi("参数缺失")
 
-                
+                let usr = new User(arg.id)
+
+                if (!usr.exists()) return returnErrorApi('用户不存在')
+                if (!usr.compareWithPassword(arg.password)) return returnErrorApi('密码错误')
+
+                return {
+                    msg: 'sucess',
+                    code: 0,
+                    accessToken: UserAuth.getAccessToken(arg.id)
+                }
             }
         ],
         /**
@@ -135,6 +156,30 @@ io.on('connection', (client) => {
                     nickName: arg.nickName,
                     password: arg.password,
                 })
+
+                return {
+                    msg: 'success',
+                    code: 0,
+                }
+            }
+        ]
+        /**
+         * 获取更新的令牌
+         */
+         [
+            "lingchair.user.getNewerToken",
+            /**
+             * 获取更新的令牌
+             * @param { Object } arg
+             * @param { String } arg.id 用户ID
+             * @param { String } arg.accessToken 用户令牌
+             * @returns { Object } successOrFailure
+             */
+            function(arg) {
+                if (!checkArgv(arg, ['id', 'accessToken'])) return returnErrorApi("参数缺失")
+
+                let u = new User(arg.id)
+                if (!UserAuth.checkAvailable(arg.id, arg.accessToken)) return returnToken401Api()
 
                 return {
                     msg: 'success',

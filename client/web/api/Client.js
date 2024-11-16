@@ -8,6 +8,14 @@
  * Organization - @LingChair <https://github.com/LingChair>
  */
 
+/**
+ * 获取当前令牌
+ * @returns { String } accessToken
+ */
+function getCurrentToken() {
+    return data.current_token
+}
+
 class Client {
     static io
     /**
@@ -52,12 +60,12 @@ class Client {
 
 window.Client = Client
 
-class IUser {
+class RemoteUser {
     constructor(id) {
         this.id = id
     }
     static asAPI(id) {
-        return new IUser(id)
+        return new RemoteUser(id)
     }
     async signUp({ nickName, password }) {
         try {
@@ -67,9 +75,29 @@ class IUser {
                 nickName: nickName,
             }, 4)
         } catch (e) {
-            return { code: -1, msg: e }
+            return { code: -4, msg: e }
+        }
+    }
+    async signIn({ password }) {
+        try {
+            return await Client.emit('lingchair.user.signIn', {
+                id: this.id,
+                password: password,
+            }, 4)
+        } catch (e) {
+            return { code: -4, msg: e }
+        }
+    }
+    async getNewerToken() {
+        try {
+            return await Client.emit('lingchair.user.getNewerToken', {
+                id: this.id,
+                accessToken: getCurrentToken(),
+            }, 4)
+        } catch (e) {
+            return { code: -4, msg: e }
         }
     }
 }
 
-window.IUser = IUser
+window.RemoteUser = RemoteUser

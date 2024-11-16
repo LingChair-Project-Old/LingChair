@@ -31,8 +31,8 @@
     <script src="adapter/ListView.js"></script>
     <title>铃之椅</title>
 
-    <!-- 封装 -->
-    <script src="api/Client.js"></script>
+    <!-- 接口库 -->
+    <script src="api/client.js"></script>
 
     <!-- 安全的数据储存 -->
     <script>
@@ -53,7 +53,7 @@
         const _data_cached = JSON.parse(_dec)
 
         /**
-         * @type { { server_list: [], current_server: "", close_guide: false, current_user: '' } }
+         * @type { { server_list: [], current_server: "", close_guide: false, current_user: '', current_token: '', newer_token: '' } }
          */
         const data = new Proxy({}, {
             get: (obj, k) => {
@@ -322,30 +322,60 @@
 
         <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').attr('open', true)">切换服务</mdui-button>
         <mdui-button slot="action" variant="text" onclick="$('.登录对话框').get(0).signUp()">注册</mdui-button>
-        <mdui-button slot="action" variant="text" onclick="$('.登录对话框').get(0)">登录</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.登录对话框').get(0).signIn()">登录</mdui-button>
     </mdui-dialog>
 
+    <mdui-snackbar close-on-outside-click action="登录" class="登录对话框_注册成功提示">注册成功 :)</mdui-snackbar>
+
     <script>
+        $('.登录对话框_注册成功提示').on('action-click', () => {
+            $('.登录对话框').get(0).signIn()
+            $('.登录对话框_注册成功提示').attr('open', false)
+        })
+
         if (data.current_server != null && data.current_user == null) {
             Client.setup(data.current_server)
             $('.登录对话框').attr('open', true)
         }
 
         $('.登录对话框').get(0).signUp = async () => {
-            let re = await IUser.asAPI($('.登录_账号').val()).signUp({ 
+            let re = await RemoteUser.asAPI($('.登录_账号').val()).signUp({ 
                 password: $('.登录_密码').val()
             })
 
             if (re.code != 0)
                 return showSnackBar("注册失败: " + re.msg)
+            
+            $('.登录对话框_注册成功提示').attr('open', true)
         }
-        
+        $('.登录对话框').get(0).signIn = async () => {
+            let u = RemoteUser.asAPI($('.登录_账号').val())
+
+            let re = await u.signIn({ 
+                password: $('.登录_密码').val()
+            })
+
+            if (re.code != 0)
+                return showSnackBar("登录失败: " + re.msg)
+
+            data.current_user = $('.登录_账号').val()
+            data.current_token = re.accessToken
+            
+            u.getNewerToken().then((re) => {
+                if (re.code == 0)
+                    data.newer_token = re.accessToken
+                location.reload()
+            })
+
+            showWaitingDialog("请等待登录信息写入...")
+        }
     </script>
     
     <!-- 临时切换服务对话框 -->
-    <mdui-dialog headline="临时切换服务" class="临时切换服务对话框">
+    <mdui-dialog close-on-overlay-click headline="临时切换服务" class="临时切换服务对话框">
         <mdui-text-field label="服务地址(留空为当前域)" class="临时切换服务_服务地址"></mdui-text-field>
 
+        <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').get(0).open = false">取消</mdui-button>
         <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').get(0).checkAvailable()">连接</mdui-button>
     </mdui-dialog>
 

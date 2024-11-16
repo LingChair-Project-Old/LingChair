@@ -88,8 +88,8 @@ export default class MessageList {
     /**
      * 从最新开始, 获取历史消息
      * @param { Object } param 
-     * @param { Number } param.limit 获取数量
-     * @param { Number } param.offset 获取偏移
+     * @param { Number } [param.limit] 获取数量
+     * @param { Number } [param.offset] 获取偏移
      * @returns { MessageTypeDef[] } 消息列表
      */
     getHistroy({ limit = 13, offset = 0 }) {
@@ -103,7 +103,13 @@ export default class MessageList {
 
         do {
             if (count <= 0 || limit <= 0) break
-            histroy.unshift(io.open(this.getDataPath() + '/msg' + count, 'r').readAllJsonAndClose())
+            let msgPiecePath = this.getDataPath() + '/msg' + count
+            histroy.unshift(io.exists(msgPiecePath) ? io.open(msgPiecePath, 'r').readAllJsonAndClose() : {
+                msg: '消息丢失',
+                senderId: '未知',
+                type: 'text',
+                time: 0,
+            })
             count--
             limit--
         } while (true)
