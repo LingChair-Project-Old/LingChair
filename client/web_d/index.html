@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="zh-CN" class="mdui-theme-auto">
+
+<!--
+ * ©2024 The LingChair Project
+ * 
+ * Make a more colorful world...
+ * 
+ * License - Apache License 2.0
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ * Organization - @LingChair <https://github.com/LingChair>
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <meta name="renderer" content="webkit" />
+
+    <!-- 字体 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- UI库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@2/mdui.css">
+    <script src="https://cdn.jsdelivr.net/npm/mdui@2/mdui.global.js"></script>
+
+    <!-- 工具库 -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
+
+    <title>铃之椅</title>
+
+    <!-- Core -->
+    <script src="api/client.js"></script>
+    <script src="api/view.js"></script>
+</head>
+
+<body style="display: flex;">
+    <style>
+        * {
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -o-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor;
+        }
+    </style>
+
+    <!-- 侧边导航栏 -->
+    <mdui-navigation-rail alignment="center" class="侧边导航栏">
+        <!-- <mdui-button-icon icon="menu" slot="top"></mdui-button-icon> -->
+        <avatar-view src="https://avatars.githubusercontent.com/u/150461955?v=4" slot="top"></avatar-view>
+
+        <mdui-navigation-rail-item icon="watch_later--outlined" active-icon="watch_later" alt="最近" show=".list_最近">
+        </mdui-navigation-rail-item>
+        <mdui-navigation-rail-item icon="contacts--outlined" active-icon="contacts" alt="联系人" show=".list_联系人">
+        </mdui-navigation-rail-item>
+        <mdui-navigation-rail-item icon="favorite_border" active-icon="favorite" alt="关注" show=".list_关注">
+        </mdui-navigation-rail-item>
+
+        <mdui-button-icon icon="settings" slot="bottom"></mdui-button-icon>
+
+        <script>
+            $(`.侧边列表 > mdui-list`).hide()
+
+            $('.侧边导航栏').click(function (event) {
+                const v = event.target
+                if (v.tagName.toLowerCase() == 'mdui-navigation-rail-item') {
+                    $(`.侧边列表 > list-view`).hide()
+                    $($(v).attr('show')).show()
+                }
+            })
+
+            $(() => $('mdui-navigation-rail-item[show=".list_最近"]').click())
+        </script>
+    </mdui-navigation-rail>
+
+    <div
+        style="position: relative; overflow: hidden; width:100%; height: calc(var(--lc-height) - 16px); display: flex;">
+        <!-- 侧边栏 -->
+        <div class="侧边列表" style="width:22%;">
+
+            <style>
+                .侧边列表>*>list-view-iconitem {
+                    margin: 5px;
+                }
+            </style>
+
+            <!-- 最近 -->
+            <list-view class="list_最近" header="最近">
+                <list-view-iconitem src="https://avatars.githubusercontent.com/u/150461955?v=4" title="测试" user-id="test"></list-view-iconitem>
+            </list-view>
+
+            <!-- 联系人 -->
+            <list-view class="list_联系人" header="联系人">
+                <list-view-iconitem src="https://avatars.githubusercontent.com/u/150461955?v=4" title="测试" user-id="test"></list-view-iconitem>
+            </list-view>
+
+            <!-- 关注 -->
+            <list-view class="list_关注" header="关注">
+                <list-view-iconitem src="https://avatars.githubusercontent.com/u/150461955?v=4" title="测试" user-id="test"></list-view-iconitem>
+            </list-view>
+
+            <script>
+                $(function () {
+                    $('.list_最近').click(function (event) {
+                        let v = event.target
+                        for (let i = 0; i < 3; i++) {
+                            if (v.tagName.toLowerCase() == 'mdui-list-item') {
+                                $('.list_最近 > mdui-list-item').attr('active', null)
+                                v.active = true
+                                ChatContainer.switchTo($(v).attr('user-id'), v.innerText)
+                                break
+                            }
+                            v = v.parentNode
+                        }
+                    })
+
+                    $('.list_联系人').click(function (event) {
+                        let v = event.target
+                        for (let i = 0; i < 3; i++) {
+                            if (v.tagName.toLowerCase() == 'mdui-list-item') {
+
+                                break
+                            }
+                            v = v.parentNode
+                        }
+                    })
+
+                    $('.list_关注').click(function (event) {
+                        let v = event.target
+                        for (let i = 0; i < 3; i++) {
+                            if (v.tagName.toLowerCase() == 'mdui-list-item') {
+
+                                break
+                            }
+                            v = v.parentNode
+                        }
+                    })
+                })
+            </script>
+
+        </div>
+
+        <!-- 聊天页面框架 -->
+        <div style="height: 100%; width: 78%;">
+
+            <div>
+                <mdui-top-app-bar class="聊天显示框架_工具栏" scroll-target=".聊天显示框架">
+                    <mdui-top-app-bar-title style="font-size: calc(var(--mdui-typescale-title-medium-size) + 4px);">
+                    </mdui-top-app-bar-title>
+
+                    <div style="flex-grow: 1"></div>
+
+                    <mdui-button-icon icon="call"></mdui-button-icon>
+
+                    <!-- 聊天显示框架_工具栏 - 更多 -->
+                    <mdui-dropdown placement="auto">
+                        <mdui-button-icon slot="trigger" icon="more_vert"></mdui-button-icon>
+                        <mdui-menu>
+                            <mdui-menu-item>
+                                插入图片
+                                <mdui-icon slot="icon" name="image"></mdui-icon>
+                            </mdui-menu-item>
+                        </mdui-menu>
+                    </mdui-dropdown>
+
+                </mdui-top-app-bar>
+
+                <div class="聊天显示框架" style="height: 90%;"></div>
+                <script>
+                    class ChatContainer {
+                        static currentId
+                        /**
+                         * 转到某人的聊天页面
+                         * @param { String } id 用户ID/群ID
+                         * @param { String } nick 用户昵称/群名称
+                         */
+                        static switchTo(id, nick) {
+                            this.currentId = id
+
+                            $('.无聊天页面').hide()
+                            $('.聊天显示框架').parent().show()
+
+                            $('.聊天显示框架_工具栏 > mdui-top-app-bar-title').text(nick)
+                        }
+                    }
+                </script>
+
+                <mdui-text-field class="消息编辑框" autosize placeholder="(｡･ω･｡)" style="position: absolute; bottom: 0;">
+                    <!-- 消息编辑 - 更多 -->
+                    <mdui-dropdown slot="icon" placement="auto">
+                        <mdui-button-icon slot="trigger" icon="more_vert"></mdui-button-icon>
+                        <mdui-menu>
+                            <mdui-menu-item>
+                                插入图片
+                                <mdui-icon slot="icon" name="image"></mdui-icon>
+                            </mdui-menu-item>
+                            <mdui-menu-item>
+                                插入文件
+                                <mdui-icon slot="icon" name="attach_file"></mdui-icon>
+                            </mdui-menu-item>
+                            <mdui-menu-item>
+                                插入语音
+                                <mdui-icon slot="icon" name="keyboard_voice"></mdui-icon>
+                            </mdui-menu-item>
+                        </mdui-menu>
+                    </mdui-dropdown>
+                    <mdui-button-icon slot="end-icon" icon="send"></mdui-button-icon>
+                </mdui-text-field>
+
+                <script>
+                    $('.聊天显示框架').parent().hide()
+                </script>
+            </div>
+
+            <div class="无聊天页面" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                <div style="align-self: center; display: flex; flex-direction: column; align-items: center;">
+                    <span style="font-size: calc(var(--mdui-typescale-title-medium-size) + 2px);">选择一个联系人以开始对话</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 等待对话框 -->
+    <mdui-dialog class="waiting-dialog">
+        <mdui-circular-progress style="margin-left: 3px"></mdui-circular-progress>
+        <span style="margin-left: 20px; position: absolute; bottom: 38%;">稍等片刻...</span>
+        <style>
+            .waiting-dialog {
+                z-index: 114514;
+            }
+
+            .waiting-dialog::part(body) {
+                overflow: hidden;
+                margin-top: 2px;
+                margin-left: 2px;
+            }
+        </style>
+    </mdui-dialog>
+    <script>
+        /**
+         * 展示等待对话框, 可复用
+         * @param { String } text
+         * @returns { Function } closeDialog
+         */
+        const showWaitingDialog = (text) => {
+            $('.waiting-dialog').attr('open', true).find('span').text(text)
+            return () => $('.waiting-dialog').attr('open', false)
+        }
+    </script>
+
+    <!-- 初次使用对话框 -->
+    <mdui-dialog headline="欢迎!"
+        description="铃之椅 是一个轻量、跨平台、简单易用且开源的即时通讯项目, 目前仍处于试验阶段. 欢迎浏览我们的主页: https://lingchair.github.io/introduce"
+        class="欢迎使用对话框">
+        <mdui-button slot="action" variant="text" onclick="$('.欢迎使用对话框').attr('open', false)">关闭</mdui-button>
+    </mdui-dialog>
+    <script>
+        if (!data.close_guide) $('.欢迎使用对话框').attr('open', true)
+
+        $('.欢迎使用对话框').one('closed', () => {
+            $('.输入服务地址对话框').attr('open', true)
+        })
+    </script>
+
+    <!-- 登录对话框 -->
+    <mdui-dialog headline="登录" class="登录对话框">
+        <!-- description="提示: 不同服务节点间的数据不相通" -->
+
+        <mdui-text-field label="账号" class="登录_账号"></mdui-text-field>
+        <div style="height: 10px;"></div>
+        <mdui-text-field label="密码" class="登录_密码"></mdui-text-field>
+
+        <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').attr('open', true)">切换服务节点</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.登录对话框').get(0).signUp()">注册</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.登录对话框').get(0).signIn()">登录</mdui-button>
+    </mdui-dialog>
+
+    <mdui-snackbar close-on-outside-click action="登录" class="登录对话框_注册成功提示">注册成功 :)</mdui-snackbar>
+    <mdui-snackbar action="重新登录" class="重新登录提示">登录状态失效啦</mdui-snackbar>
+
+    <script>
+        $('.登录对话框_注册成功提示').on('action-click', () => {
+            $('.登录对话框').get(0).signIn()
+            $('.登录对话框_注册成功提示').attr('open', false)
+        })
+
+        $('.重新登录提示').on('action-click', () => {
+            data.current_user = null
+            $('.重新登录提示').attr('open', false)
+            location.reload()
+        })
+
+        if (data.current_server != null) {
+            Client.setup(data.current_server)
+            if (data.current_user == null)
+                $('.登录对话框').attr('open', true)
+            else {
+                let u = RemoteUser.asAPI(data.current_user)
+                u.checkToken().then((re) => {
+                    if (re.status)
+                        u.getNewerToken().then((r) => {
+                            if (r.code == 0)
+                                data.newer_token = r.accessToken
+                        })
+                    else
+                        $('.重新登录提示').attr('open', true)
+                })
+            }
+        }
+
+
+        $('.登录对话框').get(0).signUp = async () => {
+            let re = await RemoteUser.asAPI($('.登录_账号').val()).signUp({
+                password: $('.登录_密码').val()
+            })
+
+            if (re.code != 0)
+                return showSnackBar("注册失败: " + re.msg)
+
+            $('.登录对话框_注册成功提示').attr('open', true)
+        }
+        $('.登录对话框').get(0).signIn = async () => {
+            let u = RemoteUser.asAPI($('.登录_账号').val())
+
+            let re = await u.signIn({
+                password: $('.登录_密码').val()
+            })
+
+            if (re.code != 0)
+                return showSnackBar("登录失败: " + re.msg)
+
+            data.current_user = $('.登录_账号').val()
+            data.current_token = re.accessToken
+
+            u.getNewerToken().then((re) => {
+                if (re.code == 0)
+                    data.newer_token = re.accessToken
+                location.reload()
+            })
+
+            showWaitingDialog("请等待登录信息写入...")
+        }
+    </script>
+
+    <!-- 临时切换服务对话框 -->
+    <mdui-dialog close-on-overlay-click headline="临时切换服务" class="临时切换服务对话框">
+        <mdui-text-field label="服务地址(留空为当前域)" class="临时切换服务_服务地址"></mdui-text-field>
+
+        <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').get(0).open = false">取消</mdui-button>
+        <mdui-button slot="action" variant="text" onclick="$('.临时切换服务对话框').get(0).checkAvailable()">连接</mdui-button>
+    </mdui-dialog>
+
+    <!-- 连接到服务对话框 -->
+    <mdui-dialog headline="连接到服务" class="输入服务地址对话框">
+        <!-- description="铃之椅 是去中心化的, 你需要一个已有的服务来使用它, 且不同服务间数据并不相通. 后续可在设置中添加或切换. 如需了解更多, 请转到 https://github.com/LingChair/LingChair" -->
+
+        <mdui-text-field label="服务地址(留空为当前域)" class="连接到服务_服务地址"></mdui-text-field>
+
+        <!-- <div style="height: 10px;"></div> -->
+
+        <!-- <div style="display: flex; align-items: center;"><span>HTTPS</span><div style="flex-grow: 0.98"></div><mdui-switch class="连接到服务_使用HTTPS" checked-icon=""></mdui-switch></div> -->
+        <mdui-button slot="action" variant="text" onclick="$('.输入服务地址对话框').get(0).checkAvailable()">连接并保存</mdui-button>
+    </mdui-dialog>
+
+    <!-- 服务检查 以及初次填写 -->
+    <script>
+        $('.临时切换服务对话框').get(0).checkAvailable = async () => {
+            let c = showWaitingDialog("检查可用性...")
+
+            let addr = $('.临时切换服务_服务地址').val()
+
+            addr = /^(http|ws)s?/.test(addr) || addr == "" ? addr : `http://${addr}`
+
+            Client.setup(addr)
+
+            try {
+                await Client.emit('lingchair.ping', {}, 3)
+
+                data.current_server = addr
+
+                $('.临时切换服务对话框').attr('open', false)
+
+                c()
+            } catch (e) {
+                showSnackBar('连接服务失败: ' + e.message)
+                c()
+            }
+        }
+
+        $('.输入服务地址对话框').get(0).checkAvailable = async () => {
+            let c = showWaitingDialog("检查可用性...")
+
+            let addr = $('.连接到服务_服务地址').val()
+
+            addr = /^(http|ws)s?/.test(addr) || addr == "" ? addr : `http://${addr}`
+
+            Client.setup(addr)
+
+            try {
+                await Client.emit('lingchair.ping', {}, 3)
+
+                data.server_list = [addr]
+                data.current_server = addr
+
+                $('.输入服务地址对话框').attr('open', false)
+
+                data.close_guide = true
+
+                window.location.reload()
+            } catch (e) {
+                showSnackBar('连接服务失败: ' + e.message)
+                c()
+            }
+        }
+    </script>
+
+    <mdui-snackbar close-on-outside-click class="public-snackbar" onclosed="_showSnackBar_opening = false">
+    </mdui-snackbar>
+    <script>
+        let _showSnackBar_opening
+        const showSnackBar = (text) => {
+            if (_showSnackBar_opening) {
+                $('.public-snackbar').attr('open', false).one('closed', () => {
+                    _showSnackBar_opening = false
+                    showSnackBar(text)
+                })
+                return
+            }
+
+            _showSnackBar_opening = true
+            $('.public-snackbar').text(text).attr('open', true).one('closed', () => _showSnackBar_opening = false)
+
+        }
+    </script>
+
+    <!-- 事件注册 -->
+    <script>
+        window.onresize = function () {
+            document.body.style.setProperty('--lc-width', `${window.innerWidth}px`)
+            document.body.style.setProperty('--lc-height', `${window.innerHeight}px`)
+
+            $('.消息编辑框').get(0).style.width = window.innerWidth - ($('.侧边导航栏').width() + $('.侧边列表').width()) - 40 + 'px'
+            $('.聊天显示框架_工具栏').get(0).style.marginLeft = $('.侧边导航栏').width() + $('.侧边列表').width() - 40 + 'px'
+        }
+        $(() => window.onresize())
+
+        $('script[view]').each(function (index, e) {
+            $(e).replaceWith(new Function($(e).html())())
+        })
+    </script>
+
+</body>
+
+</html>

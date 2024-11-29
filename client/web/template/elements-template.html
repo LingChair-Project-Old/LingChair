@@ -1,0 +1,24 @@
+<!-- 消息列表容器 -->
+<template id="message-holder-template">
+    <div style="display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-top: 10px;" id="holder"></div>
+    <!-- 默认槽位 如果没有 内部嵌套元素将不会被渲染 -->
+    <slot></slot>
+</template>
+<!-- 普通消息 (默认左) -->
+<template id="message-normal-template">
+    <div style="display: none;" id="sender-id"></div>
+    <div id="_direction_1" style="width: 99%; display: flex; justify-content: flex-start; flex-direction: column;">
+        <div id="_direction_2" style="display: flex; justify-content: flex-start;">
+            <span style="align-self: center;" id="sender-name-left"></span>
+            <mdui-avatar style="width: 50px; height: 50px; margin: 15px;" id="avatar"></mdui-avatar>
+            <span style="align-self: center;" id="sender-name-right"></span>
+        </div>
+        <mdui-card id="_direction_3" style="width: 80%; margin-left: 55px; margin-top: -5px; padding: 20px; align-self: flex-start;">
+            <span id="msg"><slot></slot></span>
+        </mdui-card>
+    </div>
+</template>
+<!-- 系统消息 -->
+<template id="message-system-template">
+    <mdui-card variant="filled" style="padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;" id="msg"></mdui-card>
+</template>

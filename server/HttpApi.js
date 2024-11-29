@@ -47,7 +47,7 @@ function returnErrorApi(reason) {
  * 返回一个无效令牌数据
  * @returns { Object } 数据
  */
- function returnToken401Api() {
+function returnToken401Api() {
     return { msg: '令牌无效', code: -401 }
 }
 
@@ -80,12 +80,12 @@ function registerCallbacks(client, funcList) {
 
             try {
                 if (arg instanceof Object) {
-                 const re = func(arg)
-                 log(`客户端 ${client.handshake.address} 请求 [${funcName}] with args ${JSON.stringify(arg).substring(0, 100)}, returned ${JSON.stringify(re).substring(0, 100)}`)
-                 cb(re)
-             } else
-                   logw(`客户端 ${client.handshake.address} 对 [${funcName}] 进行无效请求`)
-            } catch(e) {
+                    const re = func(arg)
+                    log(`客户端 ${client.handshake.address} 请求 [${funcName}] with args ${JSON.stringify(arg).substring(0, 300)}, returned ${JSON.stringify(re).substring(0, 300)}`)
+                    cb(re)
+                } else
+                    logw(`客户端 ${client.handshake.address} 对 [${funcName}] 进行无效请求`)
+            } catch (e) {
                 loge(e)
                 cb(returnErrorApi(e + ""))
             }
@@ -102,7 +102,7 @@ io.on('connection', (client) => {
          */
         [
             "lingchair.ping",
-            (_arg) => ({ msg: "success", code: 0}) ,
+            (_arg) => ({ msg: "success", code: 0 }),
         ],
         /** =================================================
          *                        用户
@@ -119,7 +119,7 @@ io.on('connection', (client) => {
              * @param { String } arg.password 用户密码
              * @returns { Object } successOrFailure
              */
-            function(arg) {
+            function (arg) {
                 if (!checkArgv(arg, ['id', 'password'])) return returnErrorApi("参数缺失")
 
                 let usr = new User(arg.id)
@@ -137,7 +137,7 @@ io.on('connection', (client) => {
         /**
          * 用户注册
          */
-         [
+        [
             "lingchair.user.signUp",
             /**
              * 注册
@@ -147,7 +147,7 @@ io.on('connection', (client) => {
              * @param { String } [arg.nickName] 用户昵称
              * @returns { Object } successOrFailure
              */
-            function(arg) {
+            function (arg) {
                 if (!checkArgv(arg, ['id', 'password'])) return returnErrorApi("参数缺失")
 
                 let u = new User(arg.id)
@@ -162,11 +162,11 @@ io.on('connection', (client) => {
                     code: 0,
                 }
             }
-        ]
+        ],
         /**
          * 获取更新的令牌
          */
-         [
+        [
             "lingchair.user.getNewerToken",
             /**
              * 获取更新的令牌
@@ -175,15 +175,39 @@ io.on('connection', (client) => {
              * @param { String } arg.accessToken 用户令牌
              * @returns { Object } successOrFailure
              */
-            function(arg) {
+            function (arg) {
                 if (!checkArgv(arg, ['id', 'accessToken'])) return returnErrorApi("参数缺失")
 
-                let u = new User(arg.id)
                 if (!UserAuth.checkAvailable(arg.id, arg.accessToken)) return returnToken401Api()
 
                 return {
                     msg: 'success',
                     code: 0,
+                    accessToken: UserAuth.makeNewerToken(arg.id, arg.accessToken)
+                }
+            }
+        ],
+        /**
+         * 检测令牌状态
+         */
+        [
+            "lingchair.user.checkToken",
+            /**
+             * 获取更新的令牌
+             * @param { Object } arg
+             * @param { String } arg.id 用户ID
+             * @param { String } arg.accessToken 用户令牌
+             * @returns { Object } successOrFailure
+             */
+            function (arg) {
+                if (!checkArgv(arg, ['id', 'accessToken'])) return returnErrorApi("参数缺失")
+
+                let u = new User(arg.id)
+
+                return {
+                    msg: 'success',
+                    code: 0,
+                    status: UserAuth.checkAvailable(arg.id, arg.accessToken),
                 }
             }
         ]

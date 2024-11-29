@@ -15,7 +15,8 @@ export default function formatDate(tms, format) {
      * 例子: format="YYYY-MM-dd hh:mm:ss";
      */
     var o = {
-        "M+": tmd.getMonth() + 1, // month
+        "Y+": tmd.getFullYear(), // year
+        "M+": tmd.getMonth() + 1, // month 坑: Node的月份和实际差1
         "d+": tmd.getDate(), // day
         "h+": tmd.getHours(), // hour
         "m+": tmd.getMinutes(), // minute

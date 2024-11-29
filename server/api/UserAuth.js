@@ -49,22 +49,20 @@ export default class UserAuth {
      * 获取一个更新的令牌
      * @param { String } id 
      * @param { String } accessToken 
-     * @returns { Boolean } isAccessTokenAvailable
+     * @returns { String } newerAccessToken
      */
     static makeNewerToken(id, accessToken) {
-        if (this.checkAvailable(id, accessToken)) {
-            let _ = accessToken.split('_')
-            let year = parseInt(_[1])
-            let month = parseInt(_[2]) + 1
-            if (month > 12) {
-                month = 1
-                year++
-            }
-            
-            let d = new Date()
-            d.setFullYear(year)
-            d.setMonth(month)
-            return this.makeAccessToken(id, new User(id).getPassword(), d.getTime())
+        let _ = accessToken.split('_')
+        let year = parseInt(_[1])
+        let month = parseInt(_[2]) + 1
+        if (month > 12) {
+            month = 1
+            year++
         }
+
+        let d = new Date()
+        d.setFullYear(year)
+        d.setMonth(month - 1) // 坑: Node的月份和实际差1
+        return this.makeAccessToken(id, new User(id).getPassword(), d.getTime())
     }
 }

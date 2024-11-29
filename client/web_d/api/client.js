@@ -98,6 +98,16 @@ class RemoteUser {
             return { code: -4, msg: e }
         }
     }
+    async checkToken() {
+        try {
+            return await Client.emit('lingchair.user.checkToken', {
+                id: this.id,
+                accessToken: getCurrentToken(),
+            }, 4)
+        } catch (e) {
+            return { code: -4, msg: e }
+        }
+    }
 }
 
 window.RemoteUser = RemoteUser
