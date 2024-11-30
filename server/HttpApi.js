@@ -66,10 +66,12 @@ const io = new SocketIo.Server(httpServer, {})
 /**
  * 生成一个嵌套函数保障正确的参数调用
  * @param { SocketIo.Socket } client
- * @param { [[String, Function<Object>]] } funcList
+ * @param { Object } funcList
  * @returns { Function } on事件监听函数
  */
 function registerCallbacks(client, funcList) {
+    /* for (let )
+ */
     for (let i of funcList) {
         const func = i[1]
         const funcName = i[0]
