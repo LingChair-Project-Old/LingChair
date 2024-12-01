@@ -30,12 +30,14 @@ class MessageNormal extends HTMLElement {
         super()
 
         const shadow = this.attachShadow({ mode: "open" })
+    }
+    connectedCallback() {
+        const shadow = this.shadowRoot
 
         shadow.appendChild($('#message-normal-template').get(0).content.cloneNode(true))
 
         $(shadow).find('#sender-name-left').hide()
-    }
-    connectedCallback() {
+
         this.update()
     }
     attributeChangedCallback(_name, _oldValue, _newValue) {
@@ -75,7 +77,9 @@ class MessageSystem extends HTMLElement {
         super()
 
         const shadow = this.attachShadow({ mode: "open" })
-
+    }
+    connectedCallback() {
+        const shadow = this.shadowRoot
         shadow.appendChild($('#message-system-template').get(0).content.cloneNode(true))
     }
 }
@@ -85,7 +89,9 @@ class MessageHolder extends HTMLElement {
         super()
 
         const shadow = this.attachShadow({ mode: "open" })
-
+    }
+    connectedCallback() {
+        const shadow = this.shadowRoot
         shadow.appendChild($('#message-holder-template').get(0).content.cloneNode(true))
     }
     addMessage({ senderId = '', senderName = '', msg = '', avatar, direction = 'left' }, atStart) {
@@ -99,23 +105,14 @@ customElements.define('message-normal', MessageNormal)
 customElements.define('message-system', MessageSystem)
 customElements.define('message-holder', MessageHolder)
 
-customElements.define('main-navigation', class extends mdui.NavigationRail {
-    constructor() {
-        super()
-
-        const shadow = this.attachShadow({ mode: "open" })
-
-        shadow.appendChild($('#main-navigation-template').get(0).content.cloneNode(true))
-    }
-})
-
 customElements.define('main-navigation-item', class extends mdui.NavigationRailItem {
     static observedAttributes = ['img', 'id', 'text']
     constructor() {
         super()
 
         const shadow = this.attachShadow({ mode: "open" })
-
+    }
+    connectedCallback() {
         // 现在这是 mdui-navigation-rail-item, 不应该加到shadow而是自身
         // 害得我修了好久
 
@@ -127,8 +124,7 @@ customElements.define('main-navigation-item', class extends mdui.NavigationRailI
         avatarImg.bind('error', () => {
             avatar.text((self.getAttribute('text') || '').substring(0, 1))
         })
-    }
-    connectedCallback() {
+    
         this.myUpdate()
         super.connectedCallback()
     }
@@ -142,3 +138,14 @@ customElements.define('main-navigation-item', class extends mdui.NavigationRailI
         this.hasAttribute('id') && $(this).attr('value', this.getAttribute('id'))
     }
 })
+
+customElements.define('message-img', class extends Image {
+    constructor() {
+        super()
+    }
+    connectedCallback() {
+        super.connectedCallback()
+        this.style.maxWidth = "90%"
+        this.style.maxHeight = "90%"
+    }
+}, { extends: 'img' })
