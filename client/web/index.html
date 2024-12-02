@@ -100,6 +100,7 @@
             </div>
             <div
                 id="_direction_1"
+                slot="trigger"
                 style="width: 100%; display: flex; justify-content: flex-start; flex-direction: column;">
                 <div
                     id="_direction_2"
@@ -128,6 +129,22 @@
                     </span>
                 </mdui-card>
             </div>
+            <!-- <mdui-dropdown trigger="contextmenu" open-on-pointer> -->
+            <!-- <mdui-menu> -->
+            <!-- <mdui-menu-item>复制文本<mdui-icon -->
+            <!-- slot="icon" -->
+            <!-- name="copy_all" -->
+            <!-- id="switch-navigation-list-info-menuicon"> -->
+            <!-- </mdui-icon> -->
+            <!-- </mdui-menu-item> -->
+            <!-- <mdui-menu-item>原始文本<mdui-icon -->
+            <!-- slot="icon" -->
+            <!-- name="data_object" -->
+            <!-- id="switch-navigation-list-info-menuicon"> -->
+            <!-- </mdui-icon> -->
+            <!-- </mdui-menu-item> -->
+            <!-- </mdui-menu> -->
+            <!-- </mdui-dropdown> -->
         </template>
         <!-- 系统消息 -->
         <template id="message-system-template">
@@ -474,6 +491,68 @@
                             <message-img src="https://www.yuanshen.com/images/ys.96a55539.png" />
                         </message-normal>
                     </message-holder>
+
+                    <mdui-top-app-bar
+                        style="z-index: inherit; bottom: 0; position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
+                        scroll-target="#right-contents">
+                        <mdui-text-field
+                            placeholder="(=・ω・=)"
+                            variant="outlined"
+                            autosize="autosize"
+                            id="input_message"
+                            style="align-self: center; flex-grow: 1; max-height: 46px; max-width: 67.5%;">
+                        </mdui-text-field>
+                        <style>
+                            #input_message::part(input) {
+                                line-height: 15px;
+                            }
+                        </style>
+                        <mdui-button-icon icon="send">
+                        </mdui-button-icon>
+                        <mdui-dropdown>
+                            <mdui-button-icon
+                                icon="more_vert"
+                                slot="trigger">
+                            </mdui-button-icon>
+                            <mdui-menu>
+                                <mdui-menu-item>插入图片<mdui-icon
+                                        slot="icon"
+                                        name="image">
+                                    </mdui-icon>
+                                </mdui-menu-item>
+                                <mdui-menu-item>插入音频<mdui-icon
+                                        slot="icon"
+                                        name="keyboard_voice">
+                                    </mdui-icon>
+                                </mdui-menu-item>
+                                <mdui-menu-item>插入文件<mdui-icon
+                                        slot="icon"
+                                        name="insert_drive_file">
+                                    </mdui-icon>
+                                </mdui-menu-item>
+                                <mdui-menu-item>插入链接<mdui-icon
+                                        slot="icon"
+                                        name="link">
+                                    </mdui-icon>
+                                </mdui-menu-item>
+                                <mdui-divider>
+                                </mdui-divider>
+                                <mdui-menu-item>插入名片<mdui-icon
+                                        slot="icon"
+                                        name="account_box">
+                                    </mdui-icon>
+                                </mdui-menu-item>
+                                <mdui-divider>
+                                </mdui-divider>
+                                <mdui-menu-item>展开输入框<mdui-icon
+                                        slot="icon"
+                                        name="open_in_full">
+                                    </mdui-icon>
+                                </mdui-menu-item>
+                            </mdui-menu>
+                        </mdui-dropdown>
+                    </mdui-top-app-bar>
+
                 </div>
             </div>
         </div>
