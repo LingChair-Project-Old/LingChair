@@ -1,28 +1,12 @@
-class Message {
-    constructor(arg) {
-        const { senderId = '', senderName = '', msg = '' } = arg || {}
-        this.senderId = senderId
-        this.senderName = senderName
-        this.msg = msg
-        this.avatar = avatar
-    }
-    setSenderId(senderId) {
-        this.senderId = senderId
-        return this
-    }
-    setSenderName(senderName) {
-        this.senderName = senderName
-        return this
-    }
-    setMsg(msg) {
-        this.msg = msg
-        return this
-    }
-    setAvatar(avatar) {
-        this.avatar = avatar
-        return this
-    }
-}
+/* 
+ * ©2024 The LingChair Project
+ * 
+ * Make a more colorful world...
+ * 
+ * License - Apache License 2.0
+ * Author - @MoonLeeeaf <https://github.com/MoonLeeeaf>
+ * Organization - @LingChair <https://github.com/LingChair>
+ */
 
 class MessageNormal extends HTMLElement {
     static observedAttributes = ['avatar', 'sender-name', 'sender-id', 'msg', 'direction']
@@ -98,6 +82,23 @@ class MessageHolder extends HTMLElement {
         const v = new MessageNormal()
         $(v).attr('sender-id', senderId).attr('sender-name', senderName).attr('avatar', avatar).attr('direction', direction).text(msg)
         $(this)[atStart ? 'prepend' : 'append'](v)
+    }
+    addSystemMessage(msg, atStart) {
+        const v = new MessageSystem()
+        $(v).text(msg)
+        $(this)[atStart ? 'prepend' : 'append'](v)
+    }
+    getMessages(withSystemMessage) {
+        let ls = []
+        $(this).find('message-normal' + withSystemMessage ? ', message-system' : '').each((_i, e) => {
+            let a = $(e)
+            ls.push({
+                senderName: a.attr('sender-name'),
+                avatar: a.attr('avatar'),
+                senderId: a.attr('sender-id'),
+                direction: a.attr('direction'),
+            })
+        })
     }
 }
 
