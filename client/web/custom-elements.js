@@ -139,13 +139,22 @@ customElements.define('main-navigation-item', class extends mdui.NavigationRailI
     }
 })
 
-customElements.define('message-img', class extends Image {
+customElements.define('message-img', class extends HTMLElement {
     constructor() {
         super()
     }
     connectedCallback() {
-        super.connectedCallback()
-        this.style.maxWidth = "90%"
-        this.style.maxHeight = "90%"
+        let e = new Image()
+        e.style.maxWidth = "100%"
+        e.style.maxHeight = "90%"
+        e.style.marginTop = "13px"
+        e.style.borderRadius = "var(--mdui-shape-corner-medium)"
+        e.src = $(this).attr('src')
+        e.alt = $(this).attr('alt')
+        e.onerror = () => {
+            $(this).html(`<br/><mdui-icon name="broken_image" style="font-size: 2rem;"></mdui-icon>`)
+            $(this).attr('alt', '图像损坏')
+        }
+        this.appendChild(e)
     }
-}, { extends: 'img' })
+})

@@ -16,6 +16,9 @@
         <script src="https://unpkg.com/mdui@2/mdui.global.js">
         </script>
         <link
+            rel="icon"
+            href="icon.ico" />
+        <link
             rel="stylesheet"
             href="https://unpkg.com/mdui@2/mdui.css" />
         <link
@@ -73,6 +76,10 @@
         a {
             4color: rgb(var(--mdui-color-primary));
         }
+        
+        .contents-only {
+            display: contents;
+        }
     </style>
         <script
             src="https://unpkg.com/eruda/eruda.js"
@@ -87,6 +94,10 @@
             <div
                 style="display: flex; flex-direction: column; justify-content: flex-end; /* align-items: center */; padding-top: 10px; padding-bottom: 14px;"
                 id="holder">
+                <slot
+                    name="top"
+                    part="top">
+                </slot>
                 <!-- 默认槽位 如果没有 内部嵌套元素将不会被渲染 -->
                 <slot>
                 </slot>
@@ -120,6 +131,7 @@
                 </div>
                 <mdui-card
                     id="_direction_3"
+                    variant="elevated"
                     style="max-width: 80%; min-width: 0%; margin-left: 55px; margin-top: -5px; padding: 15px; align-self: flex-start;">
                     <span
                         id="msg"
@@ -306,7 +318,7 @@
                 <!-- <div style="display: contents"> -->
                 <div
                     id="main-navigation-list-1"
-                    style="display: contents">
+                    class="contents-only">
                     <main-navigation-item
                         text="满月"
                         img="https://avatars.githubusercontent.com/u/150461955?v=4">
@@ -342,7 +354,7 @@
                 </div>
                 <div
                     id="main-navigation-list-2"
-                    style="display: contents">
+                    class="contents-only">
                     <main-navigation-item
                         text="喵呜"
                         img="114514">
@@ -350,7 +362,7 @@
                 </div>
                 <div
                     id="main-navigation-list-3"
-                    style="display: contents">
+                    class="contents-only">
                     <main-navigation-item text="裙子">
                     </main-navigation-item>
                     <main-navigation-item text="裙子">
@@ -409,29 +421,40 @@
 
             <mdui-dialog
                 close-on-overlay-click="close-on-overlay-click"
-                id="dialog-about"
-                headline="关于 铃之椅">
-                <span slot="description">
-                    铃之椅💮v0.0.0
-                    <br />
-                    重新定义简单与缤纷
-                    <br />
-                    作者: 满月叶
-                    <br />
-                    开源: <a href="https://github.com/LingChair/LingChair">GitHub</a>
-                    <br />
-                    <br />
-                    满月之院 - 让科技再次伟大🌷
-                </span>
+                id="dialog-about">
+                <div
+                    slot="description"
+                    style="display: flex; margin-bottom: -4px;">
+                    <mdui-avatar src="icon.ico">
+                    </mdui-avatar>
+                    <div style="margin-left: 17px;">
+                        <span style="font-size: 1.15rem;">LingChair</span>
+                        <br />
+                        <span style="margin-top: 20px; font-size: 0.8rem;">
+                            Nightly
+                            <br />
+                            <span style="margin-top: 5px">
+                            在 <a href="https://github.com/LingChair/LingChair">GitHub</a> 查看源码
+                            </span>
+                        </span>
+                    </div>
+                </div>
             </mdui-dialog>
 
             <div>
                 <mdui-top-app-bar
                     style="position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
                     scroll-target="#right-contents">
-                    <mdui-button-icon icon="menu">
-                    </mdui-button-icon>
-                    <mdui-top-app-bar-title>Title</mdui-top-app-bar-title>
+                    <mdui-dropdown>
+                        <mdui-button-icon
+                            icon="arrow_drop_down"
+                            slot="trigger">
+                        </mdui-button-icon>
+                        <mdui-menu>
+                            <mdui-menu-item>主面板</mdui-menu-item>
+                        </mdui-menu>
+                    </mdui-dropdown>
+                    <mdui-top-app-bar-title>院审</mdui-top-app-bar-title>
                     <div style="flex-grow: 1">
                     </div>
                     <mdui-dropdown>
@@ -457,39 +480,53 @@
                 <div
                     id="right-contents"
                     style="flex-grow: 1">
+
                     <message-holder>
-                        <message-normal
-                            direction="left"
-                            sender-name="测试"
-                            sender-id="test">我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神</message-normal>
-                        <message-normal
-                            direction="left"
-                            sender-name="测试"
-                            sender-id="test">启动</message-normal>
-                        <message-normal
-                            direction="left"
-                            sender-name="测试"
-                            sender-id="test">我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神</message-normal>
-                        <message-system>原神 被 测试 踢出了群聊</message-system>
-                        <message-system>满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐</message-system>
-                        <message-normal
-                            direction="left"
-                            sender-name="测试"
-                            sender-id="test">启动</message-normal>
-                        <message-normal
-                            direction="right"
-                            sender-name="阿弥诺斯"
-                            sender-id="阿弥诺斯">阿弥诺斯</message-normal>
-                        <message-normal
-                            direction="right"
-                            sender-name="阿弥诺斯"
-                            sender-id="阿弥诺斯">我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神</message-normal>
-                        <message-normal
-                            direction="right"
-                            sender-name="阿弥诺斯"
-                            sender-id="阿弥诺斯">我要玩原神<br />
-                            <message-img src="https://www.yuanshen.com/images/ys.96a55539.png" />
-                        </message-normal>
+                        <mdui-button
+                            variant="text"
+                            slot="top"
+                            style="align-self: center;">加载更多</mdui-button>
+                        <div class="contents-only">
+                            <message-normal
+                                direction="left"
+                                sender-name="测试"
+                                sender-id="test">我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神</message-normal>
+                            <message-normal
+                                direction="left"
+                                sender-name="测试"
+                                sender-id="test">启动</message-normal>
+                            <message-normal
+                                direction="left"
+                                sender-name="测试"
+                                sender-id="test">我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神</message-normal>
+                            <message-system>原神 被 测试 踢出了群聊</message-system>
+                            <message-system>满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐</message-system>
+                            <message-normal
+                                direction="left"
+                                sender-name="测试"
+                                sender-id="test">启动</message-normal>
+                            <message-normal
+                                direction="right"
+                                sender-name="阿弥诺斯"
+                                sender-id="阿弥诺斯">阿弥诺斯</message-normal>
+                            <message-normal
+                                direction="right"
+                                sender-name="阿弥诺斯"
+                                sender-id="阿弥诺斯">我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神</message-normal>
+                            <message-normal
+                                direction="right"
+                                sender-name="阿弥诺斯"
+                                sender-id="阿弥诺斯">我要玩原神<br />
+                                <message-img src="https://www.yuanshen.com/images/ys.96a55539.png" />
+                            </message-normal>
+                            <message-normal
+                                direction="right"
+                                sender-name="阿弥诺斯"
+                                sender-id="阿弥诺斯">我要玩院审😭👊<br />
+                                <message-img
+                                    src="https://huiji-thumb.huijistatic.com/aceattorney/uploads/thumb/e/e6/Skärmbild_(985).png/640px-Skärmbild_(985).png" />
+                            </message-normal>
+                        </div>
                     </message-holder>
 
                     <mdui-top-app-bar
@@ -507,7 +544,9 @@
                                 line-height: 15px;
                             }
                         </style>
-                        <mdui-button-icon icon="send">
+                        <mdui-button-icon
+                            icon="send"
+                            id="send_message">
                         </mdui-button-icon>
                         <mdui-dropdown>
                             <mdui-button-icon
@@ -565,6 +604,11 @@
             }
             $(() => updateWindowSize())
             window.addEventListener('resize', updateWindowSize)
+            
+            // mdui.setColorScheme("#FFB4AA")
+        </script>
+
+        <script src="index.js">
         </script>
     </body>
 </html>
