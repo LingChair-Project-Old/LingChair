@@ -44,164 +44,124 @@
 
         <!-- 滑条 -->
         <style>
-        .no-scroll-bar::-webkit-scrollbar {
-            width: 0px !important;
-        }
-
-        /* https://blog.csdn.net/qq_39347364/article/details/111996581 */
-        *::-webkit-scrollbar {
-            width: 7px;
-            height: 10px;
-        }
-
-        *::-webkit-scrollbar-track {
-            width: 6px;
-            background: rgba(#101F1C, 0.1);
-            -webkit-border-radius: 2em;
-            -moz-border-radius: 2em;
-            border-radius: 2em;
-        }
-
-        *::-webkit-scrollbar-thumb {
-            background-color: rgba(144, 147, 153, .5);
-            background-clip: padding-box;
-            min-height: 28px;
-            -webkit-border-radius: 2em;
-            -moz-border-radius: 2em;
-            border-radius: 2em;
-            transition: background-color .3s;
-            cursor: pointer;
-        }
-
-        *::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(144, 147, 153, .3);
-        }
-    </style>
+            .no-scroll-bar::-webkit-scrollbar {
+                width: 0px !important;
+            }
+    
+            /* https://blog.csdn.net/qq_39347364/article/details/111996581 */
+            *::-webkit-scrollbar {
+                width: 7px;
+                height: 10px;
+            }
+    
+            *::-webkit-scrollbar-track {
+                width: 6px;
+                background: rgba(#101F1C, 0.1);
+                -webkit-border-radius: 2em;
+                -moz-border-radius: 2em;
+                border-radius: 2em;
+            }
+    
+            *::-webkit-scrollbar-thumb {
+                background-color: rgba(144, 147, 153, .5);
+                background-clip: padding-box;
+                min-height: 28px;
+                -webkit-border-radius: 2em;
+                -moz-border-radius: 2em;
+                border-radius: 2em;
+                transition: background-color .3s;
+                cursor: pointer;
+            }
+    
+            *::-webkit-scrollbar-thumb:hover {
+                background-color: rgba(144, 147, 153, .3);
+            }
+        </style>
 
         <!-- 其他样式 -->
         <style>
-        body {
-            display: flex;
-            margin: 0 0 0 0;
-        }
-
-        /* 防止小尺寸图片模糊 */
-        * {
-            image-rendering: -moz-crisp-edges;
-            image-rendering: -o-crisp-edges;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            -ms-interpolation-mode: nearest-neighbor;
-        }
-
-        /* 与窗口同大小 */
-        .size-as-window {
-            width: var(--window-width);
-            height: var(--window-height);
-        }
-
-        /* Flex - 铺满 */
-        .fill-width {
-            width: 100%;
-        }
-
-        .fill-height {
-            height: 100%;
-        }
-
-        /* 链接使用主题色 */
-        a {
-            color: rgb(var(--mdui-color-primary));
-        }
-
-        .contents-only {
-            display: contents;
-        }
-    </style>
-    <script>
-        const isMobile = () => ('ontouchstart' in document.documentElement)
-
-        isMobile && $(document.body).append($.parseHTML(`<script` + ` src="https://unpkg.com/eruda/eruda.js" onload="eruda.init()"></scr` + `ipt>`))
-    </script>
-</head>
-
-<body>
-    <!-- 自定义元素 -->
-    <!-- 消息列表容器 -->
-    <template id="message-holder-template">
-        <div style="display: flex; flex-direction: column; justify-content: flex-end; /* align-items: center */; padding-top: 10px; padding-bottom: 14px;"
-            id="holder">
-            <slot name="top" part="top">
-            </slot>
-            <!-- 默认槽位 如果没有 内部嵌套元素将不会被渲染 -->
-            <slot>
-            </slot>
-        </div>
-    </template>
-    <!-- 普通消息 -->
-    <template id="message-normal-template">
-        <style>
-            /* 精准指针设备 令桌面端 */
-            @media (pointer: fine) {
-                #_direction_3 {
-                    max-width: 50%;
-                }
+            body {
+                display: flex;
+                margin: 0 0 0 0;
             }
-
-            /* 不精准指针设备 令移动端 */
-            @media (pointer: coarse) {
-                #_direction_3 {
-                    max-width: 80%;
-                }
+    
+            /* 防止小尺寸图片模糊 */
+            * {
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -o-crisp-edges;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+                -ms-interpolation-mode: nearest-neighbor;
+            }
+    
+            /* 与窗口同大小 */
+            .size-as-window {
+                width: var(--window-width);
+                height: var(--window-height);
+            }
+    
+            /* Flex - 铺满 */
+            .fill-width {
+                width: 100%;
+            }
+    
+            .fill-height {
+                height: 100%;
+            }
+    
+            /* 链接使用主题色 */
+            a {
+                color: rgb(var(--mdui-color-primary));
+            }
+    
+            .contents-only {
+                display: contents;
             }
         </style>
-        <div style="display: none;" id="sender-id">
-        </div>
-        <div id="_direction_1" slot="trigger"
-            style="width: 100%; display: flex; justify-content: flex-start; flex-direction: column;">
-            <div id="_direction_2" style="display: flex; justify-content: flex-start;">
-                <span style="align-self: center; font-size: 90%;" id="sender-name-left">
-                </span>
-                <mdui-avatar style="width: 43px; height: 43px; margin: 11px;" id="avatar">
-                </mdui-avatar>
-                <span style="align-self: center; font-size: 90%;" id="sender-name-right">
-                </span>
-            </div>
-            <mdui-card id="_direction_3" variant="elevated"
-                style="min-width: 0%; margin-left: 55px; margin-top: -5px; padding: 15px; align-self: flex-start;">
-                <span id="msg" style="font-size: 94%;">
-                    <slot>
-                    </slot>
-                </span>
-            </mdui-card>
-        </div>
-    </template>
-    <!-- 系统消息 -->
-    <template id="message-system-template">
-        <style>
-            /* 精准指针设备 令桌面端 */
-            @media (pointer: fine) {
-                #msg {
-                    max-width: 50%;
-                }
-            }
+    </head>
 
-            /* 不精准指针设备 令移动端 */
-            @media (pointer: coarse) {
-                #msg {
-                    max-width: 90%;
-                }
-            }
-        </style>
-        <div style="width: 100%; flex-direction: column; display: flex; margin-top: 25px; margin-bottom: 20px;">
-            <mdui-card variant="filled" id="msg"
-                style="align-self: center; padding-top: 9px; padding-bottom: 9px; padding-left: 18px; padding-right: 18px; font-size: 92%;">
+    <body>
+        <script>
+            const isMobile = () => ('ontouchstart' in document.documentElement)
+
+            let a = document.createElement('script')
+            a.src = "https://unpkg.com/eruda/eruda.js"
+            a.onload = () => eruda.init()
+
+            isMobile && document.head.appendChild(a)
+        </script>
+        <!-- 自定义元素 -->
+        <!-- 消息列表容器 -->
+        <template id="message-holder-template">
+            <div
+                style="display: flex; flex-direction: column; justify-content: flex-end; /* align-items: center */; padding-top: 10px; padding-bottom: 14px;"
+                id="holder">
+                <slot
+                    name="top"
+                    part="top">
+                </slot>
+                <!-- 默认槽位 如果没有 内部嵌套元素将不会被渲染 -->
                 <slot>
                 </slot>
             </div>
         </template>
         <!-- 普通消息 -->
         <template id="message-normal-template">
+            <style>
+                /* 精准指针设备 令桌面端 */
+                @media (pointer: fine) {
+                    #_direction_3 {
+                        max-width: 50%;
+                    }
+                }
+    
+                /* 不精准指针设备 令移动端 */
+                @media (pointer: coarse) {
+                    #_direction_3 {
+                        max-width: 80%;
+                    }
+                }
+            </style>
             <div
                 style="display: none;"
                 id="sender-id">
@@ -229,177 +189,276 @@
                 <mdui-card
                     id="_direction_3"
                     variant="elevated"
-                    style="max-width: 80%; min-width: 0%; margin-left: 55px; margin-top: -5px; padding: 15px; align-self: flex-start;">
+                    style="min-width: 0%; margin-left: 55px; margin-top: -5px; padding: 15px; align-self: flex-start;">
                     <span
                         id="msg"
-                        style="font-size: 94%; max-width: 80%;">
+                        style="font-size: 94%;">
                         <slot>
                         </slot>
                     </span>
                 </mdui-card>
             </div>
-            <!-- <mdui-dropdown trigger="contextmenu" open-on-pointer> -->
-            <!-- <mdui-menu> -->
-            <!-- <mdui-menu-item>复制文本<mdui-icon -->
-            <!-- slot="icon" -->
-            <!-- name="copy_all" -->
-            <!-- id="switch-navigation-list-info-menuicon"> -->
-            <!-- </mdui-icon> -->
-            <!-- </mdui-menu-item> -->
-            <!-- <mdui-menu-item>原始文本<mdui-icon -->
-            <!-- slot="icon" -->
-            <!-- name="data_object" -->
-            <!-- id="switch-navigation-list-info-menuicon"> -->
-            <!-- </mdui-icon> -->
-            <!-- </mdui-menu-item> -->
-            <!-- </mdui-menu> -->
-            <!-- </mdui-dropdown> -->
         </template>
         <!-- 系统消息 -->
         <template id="message-system-template">
+            <style>
+                /* 精准指针设备 令桌面端 */
+                @media (pointer: fine) {
+                    #msg {
+                        max-width: 50%;
+                    }
+                }
+    
+                /* 不精准指针设备 令移动端 */
+                @media (pointer: coarse) {
+                    #msg {
+                        max-width: 90%;
+                    }
+                }
+            </style>
             <div
                 style="width: 100%; flex-direction: column; display: flex; margin-top: 25px; margin-bottom: 20px;">
                 <mdui-card
                     variant="filled"
                     id="msg"
-                    style="max-width: 90%; align-self: center; padding-top: 9px; padding-bottom: 9px; padding-left: 18px; padding-right: 18px; font-size: 92%;">
+                    style="align-self: center; padding-top: 9px; padding-bottom: 9px; padding-left: 18px; padding-right: 18px; font-size: 92%;">
                     <slot>
                     </slot>
-                </mdui-card>
-            </div>
-        </template>
+                </div>
+            </template>
+            <!-- 普通消息 -->
+            <template id="message-normal-template">
+                <div
+                    style="display: none;"
+                    id="sender-id">
+                </div>
+                <div
+                    id="_direction_1"
+                    slot="trigger"
+                    style="width: 100%; display: flex; justify-content: flex-start; flex-direction: column;">
+                    <div
+                        id="_direction_2"
+                        style="display: flex; justify-content: flex-start;">
+                        <span
+                            style="align-self: center; font-size: 90%;"
+                            id="sender-name-left">
+                        </span>
+                        <mdui-avatar
+                            style="width: 43px; height: 43px; margin: 11px;"
+                            id="avatar">
+                        </mdui-avatar>
+                        <span
+                            style="align-self: center; font-size: 90%;"
+                            id="sender-name-right">
+                        </span>
+                    </div>
+                    <mdui-card
+                        id="_direction_3"
+                        variant="elevated"
+                        style="max-width: 80%; min-width: 0%; margin-left: 55px; margin-top: -5px; padding: 15px; align-self: flex-start;">
+                        <span
+                            id="msg"
+                            style="font-size: 94%; max-width: 80%;">
+                            <slot>
+                            </slot>
+                        </span>
+                    </mdui-card>
+                </div>
+            </template>
+            <!-- 系统消息 -->
+            <template id="message-system-template">
+                <div
+                    style="width: 100%; flex-direction: column; display: flex; margin-top: 25px; margin-bottom: 20px;">
+                    <mdui-card
+                        variant="filled"
+                        id="msg"
+                        style="max-width: 90%; align-self: center; padding-top: 9px; padding-bottom: 9px; padding-left: 18px; padding-right: 18px; font-size: 92%;">
+                        <slot>
+                        </slot>
+                    </mdui-card>
+                </div>
+            </template>
 
-        <!-- 侧边导航栏 - 列表项目 -->
-        <template id="main-navigation-item-template">
-            <mdui-tooltip
-                slot="icon"
-                id="tip">
-                <mdui-avatar id="avatar">
-                    <img
-                        id="img"
-                        style="width: 100%; height: 100%; object-fit: contain;" />
-                </mdui-avatar>
-            </mdui-tooltip>
-        </template>
+            <!-- 侧边导航栏 - 列表项目 -->
+            <template id="main-navigation-item-template">
+                <mdui-tooltip
+                    slot="icon"
+                    id="tip">
+                    <mdui-avatar id="avatar">
+                        <img
+                            id="img"
+                            style="width: 100%; height: 100%; object-fit: contain;" />
+                    </mdui-avatar>
+                </mdui-tooltip>
+            </template>
 
-        <script src="custom-elements.js">
-        </script>
+            <script src="custom-elements.js">
+            </script>
 
-        <!-- 自适应窗口大小 - 辅助 -->
-        <script>
-        // 在窗口加载完毕后会将所有页面大小变化的回调都调用一次
-        const windowOnResizingCallbacks = []
+            <!-- 自适应窗口大小 - 辅助 -->
+            <script>
+                // 在窗口加载完毕后会将所有页面大小变化的回调都调用一次
+                const windowOnResizingCallbacks = []
+        
+                // 本质上不应该这么做 但是调用起来会更方便
+                // 如果有新的标准出现 那么这个应该要被废除
+                HTMLElement.prototype.getWidth = function () { return this.clientWidth }
+                HTMLElement.prototype.getHeight = function () { return this.clientHeight }
+            </script>
 
-        // 本质上不应该这么做 但是调用起来会更方便
-        // 如果有新的标准出现 那么这个应该要被废除
-        HTMLElement.prototype.getWidth = function () { return this.clientWidth }
-        HTMLElement.prototype.getHeight = function () { return this.clientHeight }
-    </script>
-
-    <!-- 主视图 -->
-    <div class="size-as-window" style="display: flex;">
-            /* 让侧边栏能多个图标滑动 */
-            mdui-navigation-rail::part(items) {
-                overflow-y: auto;
-            }
-        </style>
-            <mdui-navigation-rail>
-                <shadow-inner>
-                    <style>
-                    *::-webkit-scrollbar {
-                        width: 0px !important;
+            <!-- 主视图 -->
+            <div
+                class="size-as-window"
+                style="display: flex;">
+                <style>
+                    /* 让侧边栏能多个图标滑动 */
+                    mdui-navigation-rail::part(items) {
+                        overflow-y: auto;
                     }
                 </style>
-                </shadow-inner>
-                <mdui-button-icon
-                    lowered="lowered"
-                    icon="menu"
-                    slot="top">
-                </mdui-button-icon>
-                <mdui-menu id="switch-navigation-list-menu" selects="single" value="1">
-                    <mdui-menu-item value="0">详细列表<mdui-icon slot="icon" name="watch_later--outlined"
-                            id="switch-navigation-list-info-menuicon">
-                        </mdui-icon>
-                    </mdui-menu-item>
-                    <mdui-divider>
-                    </mdui-divider>
-                    <mdui-menu-item value="1">最近</mdui-menu-item>
-                    <mdui-menu-item value="2">联系人</mdui-menu-item>
-                    <mdui-menu-item value="3">群聊</mdui-menu-item>
-                </mdui-menu>
-            </mdui-dropdown>
+                <mdui-navigation-rail>
+                    <shadow-inner>
+                        <style>
+                            *::-webkit-scrollbar {
+                                width: 0px !important;
+                            }
+                        </style>
+                    </shadow-inner>
+                    <mdui-button-icon
+                        lowered="lowered"
+                        icon="menu"
+                        slot="top">
+                    </mdui-button-icon>
+                    <mdui-button-icon
+                        lowered="lowered"
+                        icon="add"
+                        slot="top">
+                    </mdui-button-icon>
+                    <mdui-dropdown
+                        slot="top"
+                        trigger="hover">-
+                        <mdui-button-icon
+                            icon="watch_later--outlined"
+                            slot="trigger"
+                            id="switch-navigation-list-button">
+                        </mdui-button-icon>
+                        <mdui-menu
+                            id="switch-navigation-list-menu"
+                            selects="single"
+                            value="1">
+                            <mdui-menu-item value="0">详细列表<mdui-icon
+                                    slot="icon"
+                                    name="watch_later--outlined"
+                                    id="switch-navigation-list-info-menuicon">
+                                </mdui-icon>
+                            </mdui-menu-item>
+                            <mdui-divider>
+                            </mdui-divider>
+                            <mdui-menu-item value="1">最近</mdui-menu-item>
+                            <mdui-menu-item value="2">联系人</mdui-menu-item>
+                            <mdui-menu-item value="3">群聊</mdui-menu-item>
+                        </mdui-menu>
+                    </mdui-dropdown>
 
-            <mdui-dropdown slot="bottom" trigger="hover">
-                <mdui-button-icon icon="settings" slot="trigger">
-                </mdui-button-icon>
-                <mdui-menu id="switch-navigation-list-menu">
-                    <mdui-menu-item onclick="$('#dialog-about').get(0).open = true">关于</mdui-menu-item>
-                </mdui-menu>
-            </mdui-dropdown>
-            <div id="main-navigation-list-1" class="contents-only">
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-                <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
-                </main-navigation-item>
-            </div>
-            <div id="main-navigation-list-2" class="contents-only">
-                <main-navigation-item text="喵呜" img="114514">
-                </main-navigation-item>
-            </div>
-            <div id="main-navigation-list-3" class="contents-only">
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-                <main-navigation-item text="裙子">
-                </main-navigation-item>
-            </div>
-        </mdui-navigation-rail>
+                    <mdui-dropdown
+                        slot="bottom"
+                        trigger="hover">
+                        <mdui-button-icon
+                            icon="settings"
+                            slot="trigger">
+                        </mdui-button-icon>
+                        <mdui-menu id="switch-navigation-list-menu">
+                            <mdui-menu-item onclick="$('#dialog-about').get(0).open = true">关于</mdui-menu-item>
+                        </mdui-menu>
+                    </mdui-dropdown>
+                    <div
+                        id="main-navigation-list-1"
+                        class="contents-only">
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                        <main-navigation-item
+                            text="满月"
+                            img="https://avatars.githubusercontent.com/u/150461955?v=4">
+                        </main-navigation-item>
+                    </div>
+                    <div
+                        id="main-navigation-list-2"
+                        class="contents-only">
+                        <main-navigation-item
+                            text="喵呜"
+                            img="114514">
+                        </main-navigation-item>
+                    </div>
+                    <div
+                        id="main-navigation-list-3"
+                        class="contents-only">
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                        <main-navigation-item text="裙子">
+                        </main-navigation-item>
+                    </div>
+                </mdui-navigation-rail>
 
-        <!-- 面板选择 移动端则使用对话框显示代替 -->
-        <!-- <div style="width: 20%;">
+                <!-- 面板选择 移动端则使用对话框显示代替 -->
+                <!-- <div style="width: 20%;">
             <mdui-list>
                 <mdui-list-item rounded>Headline</mdui-list-item>
                 <mdui-list-item rounded>Headline</mdui-list-item>
@@ -434,271 +493,204 @@
             </mdui-list>
         </div> -->
 
-            <mdui-dialog
-                close-on-overlay-click="close-on-overlay-click"
-                id="dialog-about">
-                <shadow-inner>
-                    <style>
+                <mdui-dialog
+                    close-on-overlay-click="close-on-overlay-click"
+                    id="dialog-about">
+                    <shadow-inner>
+                        <style>
                     *::-webkit-scrollbar {
                         width: 0px !important;
                     }
                 </style>
-                </shadow-inner>
+                    </shadow-inner>
 
-                <div
-                    slot="description"
-                    style="display: flex; margin-bottom: -4px;">
-                    <mdui-avatar src="icon.ico">
-                    </mdui-avatar>
-                    <div style="margin-left: 17px;">
-                        <span style="font-size: 1.15rem;">LingChair</span>
-                        <br />
-                        <span style="margin-top: 20px; font-size: 0.8rem;">
+                    <div
+                        slot="description"
+                        style="display: flex; margin-bottom: -4px;">
+                        <mdui-avatar src="icon.ico">
+                        </mdui-avatar>
+                        <div style="margin-left: 17px;">
+                            <span style="font-size: 1.15rem;">LingChair</span>
+                            <br />
+                            <span style="margin-top: 20px; font-size: 0.8rem;">
                         Nightly
                         <br />
-                            <span style="margin-top: 5px">
+                                <span style="margin-top: 5px">
                             在 <a href="https://github.com/LingChair/LingChair">GitHub</a> 查看源码
                         </span>
-                    </span>
-                </div>
-            </div>
-        </mdui-dialog>
-
-        <div>
-            <mdui-top-app-bar style="position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
-                scroll-target="#right-contents">
-                <mdui-top-app-bar-title>院审</mdui-top-app-bar-title>
-                <div style="flex-grow: 1">
-                </div>
-                <mdui-dropdown trigger="hover">
-                    <mdui-button-icon icon="more_vert" slot="trigger">
-                    </mdui-button-icon>
-                    <mdui-menu>
-                        <mdui-menu-item>资料<mdui-icon slot="icon" name="info">
-                            </mdui-icon>
-                        </mdui-menu-item>
-                        <mdui-menu-item>设置<mdui-icon slot="icon" name="settings">
-                            </mdui-icon>
-                        </mdui-menu-item>
-                    </mdui-menu>
-                </mdui-dropdown>
-            </mdui-top-app-bar>
-
-            <div id="right-contents" style="flex-grow: 1">
-
-                <message-holder>
-                    <mdui-button variant="text" slot="top" style="align-self: center;">加载更多</mdui-button>
-                    <div class="contents-only">
-                        <message-normal direction="left" sender-name="测试" sender-id="test">
-                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
-                        </message-normal>
-                        <message-normal direction="left" sender-name="测试" sender-id="test">启动</message-normal>
-                        <message-normal direction="left" sender-name="测试" sender-id="test">
-                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
-                        </message-normal>
-                        <message-system>原神 被 测试 踢出了群聊</message-system>
-                        <message-system>
-                            满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐
-                        </message-system>
-                        <message-normal direction="left" sender-name="测试" sender-id="test">启动</message-normal>
-                        <message-normal direction="right" sender-name="阿弥诺斯" sender-id="阿弥诺斯">阿弥诺斯</message-normal>
-                        <message-normal direction="right" sender-name="阿弥诺斯" sender-id="阿弥诺斯">
-                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
-                        </message-normal>
-                        <message-normal direction="right" sender-name="阿弥诺斯" sender-id="阿弥诺斯">我要玩原神<br />
-                            <message-img src="https://www.yuanshen.com/images/ys.96a55539.png" />
-                        </message-normal>
-                        <message-normal direction="right" sender-name="阿弥诺斯" sender-id="阿弥诺斯">我要玩院审😭👊<br />
-                            <message-img
-                                src="https://huiji-thumb.huijistatic.com/aceattorney/uploads/thumb/e/e6/Skärmbild_(985).png/640px-Skärmbild_(985).png" />
-                        </message-normal>
-                    </div>
-                </div>
-            </mdui-dialog>
-
-            <div>
-                <mdui-top-app-bar
-                    style="z-index: inherit; bottom: 0; position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
-                    scroll-target="#right-contents" id="input_toolbar">
-                    <mdui-text-field placeholder="(=・ω・=)" variant="outlined" autosize="autosize" id="input_message"
-                        style="align-self: center; flex-grow: 1; max-height: 46px;">
-                    </mdui-text-field>
-                    <style>
-                        #input_message::part(input) {
-                            line-height: 15px;
-                        }
-                    </style>
-                    <mdui-button-icon icon="send" id="send_message">
-                    </mdui-button-icon>
-                    <mdui-dropdown trigger="hover">
-                        <mdui-button-icon
-                            icon="arrow_drop_down"
-                            slot="trigger">
-                        </mdui-button-icon>
-                        <mdui-menu>
-                            <mdui-menu-item>主面板</mdui-menu-item>
-                        </mdui-menu>
-                    </mdui-dropdown>
-                    <mdui-top-app-bar-title>院审</mdui-top-app-bar-title>
-                    <div style="flex-grow: 1">
-                    </div>
-                    <mdui-dropdown trigger="hover">
-                        <mdui-button-icon
-                            icon="more_vert"
-                            slot="trigger">
-                        </mdui-button-icon>
-                        <mdui-menu>
-                            <mdui-menu-item>资料<mdui-icon
-                                    slot="icon"
-                                    name="info">
-                                </mdui-icon>
-                            </mdui-menu-item>
-                            <mdui-menu-item>设置<mdui-icon
-                                    slot="icon"
-                                    name="settings">
-                                </mdui-icon>
-                            </mdui-menu-item>
-                        </mdui-menu>
-                    </mdui-dropdown>
-                </mdui-top-app-bar>
-
-                <div
-                    id="right-contents"
-                    style="flex-grow: 1">
-
-                    <message-holder>
-                        <mdui-button
-                            variant="text"
-                            slot="top"
-                            style="align-self: center;">加载更多</mdui-button>
-                        <div class="contents-only">
-                            <message-normal
-                                direction="left"
-                                sender-name="测试"
-                                sender-id="test">
-                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
-                        </message-normal>
-                            <message-normal
-                                direction="left"
-                                sender-name="测试"
-                                sender-id="test">启动</message-normal>
-                            <message-normal
-                                direction="left"
-                                sender-name="测试"
-                                sender-id="test">
-                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
-                        </message-normal>
-                            <message-system>原神 被 测试 踢出了群聊</message-system>
-                            <message-system>
-                            满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐
-                        </message-system>
-                            <message-normal
-                                direction="left"
-                                sender-name="测试"
-                                sender-id="test">启动</message-normal>
-                            <message-normal
-                                direction="right"
-                                sender-name="阿弥诺斯"
-                                sender-id="阿弥诺斯">阿弥诺斯</message-normal>
-                            <message-normal
-                                direction="right"
-                                sender-name="阿弥诺斯"
-                                sender-id="阿弥诺斯">
-                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
-                        </message-normal>
-                            <message-normal
-                                direction="right"
-                                sender-name="阿弥诺斯"
-                                sender-id="阿弥诺斯">我要玩原神<br />
-                                <message-img src="https://www.yuanshen.com/images/ys.96a55539.png" />
-                            </message-normal>
-                            <message-normal
-                                direction="right"
-                                sender-name="阿弥诺斯"
-                                sender-id="阿弥诺斯">我要玩院审😭👊<br />
-                                <message-img
-                                    src="https://huiji-thumb.huijistatic.com/aceattorney/uploads/thumb/e/e6/Skärmbild_(985).png/640px-Skärmbild_(985).png" />
-                            </message-normal>
+                            </span>
                         </div>
-                    </message-holder>
+                    </div>
+                </mdui-dialog>
 
+                <div>
                     <mdui-top-app-bar
-                        style="z-index: inherit; bottom: 0; position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
-                        scroll-target="#right-contents"
+                        style="bottom: 0; position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
                         id="input_toolbar">
-                        <mdui-text-field
-                            placeholder="(=・ω・=)"
-                            variant="outlined"
-                            autosize="autosize"
-                            id="input_message"
-                            style="align-self: center; flex-grow: 1; max-height: 46px;">
-                        </mdui-text-field>
-                        <style>
-                        #input_message::part(input) {
-                            line-height: 15px;
-                        }
-                    </style>
-                        <script>
-                        windowOnResizingCallbacks.push((w, h) => {
-                            $('#input_message').css('max-width', `${w - ($('mdui-navigation-rail').get(0).getWidth() + $('#send_message').get(0).getWidth() * 2 + 115)}px`)
-                        })
-                    </script>
-                        <mdui-button-icon
-                            icon="send"
-                            id="send_message">
-                        </mdui-button-icon>
+                        <mdui-dropdown trigger="hover">
+                            <mdui-button-icon
+                                icon="arrow_drop_down"
+                                slot="trigger">
+                            </mdui-button-icon>
+                            <mdui-menu>
+                                <mdui-menu-item>主面板</mdui-menu-item>
+                            </mdui-menu>
+                        </mdui-dropdown>
+                        <mdui-top-app-bar-title>院审</mdui-top-app-bar-title>
+                        <div style="flex-grow: 1">
+                        </div>
                         <mdui-dropdown trigger="hover">
                             <mdui-button-icon
                                 icon="more_vert"
                                 slot="trigger">
                             </mdui-button-icon>
                             <mdui-menu>
-                                <mdui-menu-item>插入图片<mdui-icon
+                                <mdui-menu-item>资料<mdui-icon
                                         slot="icon"
-                                        name="image">
+                                        name="info">
                                     </mdui-icon>
                                 </mdui-menu-item>
-                                <mdui-menu-item>插入音频<mdui-icon
+                                <mdui-menu-item>设置<mdui-icon
                                         slot="icon"
-                                        name="keyboard_voice">
-                                    </mdui-icon>
-                                </mdui-menu-item>
-                                <mdui-menu-item>插入文件<mdui-icon
-                                        slot="icon"
-                                        name="insert_drive_file">
-                                    </mdui-icon>
-                                </mdui-menu-item>
-                                <mdui-menu-item>插入链接<mdui-icon
-                                        slot="icon"
-                                        name="link">
-                                    </mdui-icon>
-                                </mdui-menu-item>
-                                <mdui-divider>
-                                </mdui-divider>
-                                <mdui-menu-item>插入名片<mdui-icon
-                                        slot="icon"
-                                        name="account_box">
-                                    </mdui-icon>
-                                </mdui-menu-item>
-                                <mdui-divider>
-                                </mdui-divider>
-                                <mdui-menu-item>展开输入框<mdui-icon
-                                        slot="icon"
-                                        name="open_in_full">
+                                        name="settings">
                                     </mdui-icon>
                                 </mdui-menu-item>
                             </mdui-menu>
                         </mdui-dropdown>
                     </mdui-top-app-bar>
 
+                    <div
+                        id="right-contents"
+                        style="flex-grow: 1">
+
+                        <message-holder>
+                            <mdui-button
+                                variant="text"
+                                slot="top"
+                                style="align-self: center;">加载更多</mdui-button>
+                            <div class="contents-only">
+                                <message-normal
+                                    direction="left"
+                                    sender-name="测试"
+                                    sender-id="test">
+                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
+                        </message-normal>
+                                <message-normal
+                                    direction="left"
+                                    sender-name="测试"
+                                    sender-id="test">启动</message-normal>
+                                <message-normal
+                                    direction="left"
+                                    sender-name="测试"
+                                    sender-id="test">
+                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
+                        </message-normal>
+                                <message-system>原神 被 测试 踢出了群聊</message-system>
+                                <message-system>
+                            满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐满月姐姐
+                        </message-system>
+                                <message-normal
+                                    direction="left"
+                                    sender-name="测试"
+                                    sender-id="test">启动</message-normal>
+                                <message-normal
+                                    direction="right"
+                                    sender-name="阿弥诺斯"
+                                    sender-id="阿弥诺斯">阿弥诺斯</message-normal>
+                                <message-normal
+                                    direction="right"
+                                    sender-name="阿弥诺斯"
+                                    sender-id="阿弥诺斯">
+                            我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神我要玩原神
+                        </message-normal>
+                                <message-normal
+                                    direction="right"
+                                    sender-name="阿弥诺斯"
+                                    sender-id="阿弥诺斯">我要玩原神<br />
+                                    <message-img src="https://www.yuanshen.com/images/ys.96a55539.png" />
+                                </message-normal>
+                                <message-normal
+                                    direction="right"
+                                    sender-name="阿弥诺斯"
+                                    sender-id="阿弥诺斯">我要玩院审😭👊<br />
+                                    <message-img
+                                        src="https://huiji-thumb.huijistatic.com/aceattorney/uploads/thumb/e/e6/Skärmbild_(985).png/640px-Skärmbild_(985).png" />
+                                </message-normal>
+                            </div>
+                        </message-holder>
+
+                        <mdui-top-app-bar
+                            style="z-index: inherit; bottom: 0; position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
+                            scroll-target="#right-contents"
+                            id="input_toolbar">
+                            <mdui-text-field
+                                placeholder="(=・ω・=)"
+                                variant="outlined"
+                                autosize="autosize"
+                                id="input_message"
+                                style="align-self: center; flex-grow: 1; max-height: 46px;">
+                            </mdui-text-field>
+                            <style>
+                            #input_message::part(input) {
+                                line-height: 15px;
+                            }
+                        </style>
+                            <mdui-button-icon
+                                icon="send"
+                                id="send_message">
+                            </mdui-button-icon>
+                            <mdui-dropdown trigger="hover">
+                                <mdui-button-icon
+                                    icon="more_vert"
+                                    slot="trigger">
+                                </mdui-button-icon>
+                                <mdui-menu>
+                                    <mdui-menu-item>插入图片<mdui-icon
+                                            slot="icon"
+                                            name="image">
+                                        </mdui-icon>
+                                    </mdui-menu-item>
+                                    <mdui-menu-item>插入音频<mdui-icon
+                                            slot="icon"
+                                            name="keyboard_voice">
+                                        </mdui-icon>
+                                    </mdui-menu-item>
+                                    <mdui-menu-item>插入文件<mdui-icon
+                                            slot="icon"
+                                            name="insert_drive_file">
+                                        </mdui-icon>
+                                    </mdui-menu-item>
+                                    <mdui-menu-item>插入链接<mdui-icon
+                                            slot="icon"
+                                            name="link">
+                                        </mdui-icon>
+                                    </mdui-menu-item>
+                                    <mdui-divider>
+                                    </mdui-divider>
+                                    <mdui-menu-item>插入名片<mdui-icon
+                                            slot="icon"
+                                            name="account_box">
+                                        </mdui-icon>
+                                    </mdui-menu-item>
+                                    <mdui-divider>
+                                    </mdui-divider>
+                                    <mdui-menu-item>展开输入框<mdui-icon
+                                            slot="icon"
+                                            name="open_in_full">
+                                        </mdui-icon>
+                                    </mdui-menu-item>
+                                </mdui-menu>
+                            </mdui-dropdown>
+                        </mdui-top-app-bar>
+
+                    </div>
                 </div>
             </div>
-        </div>
 
-    <script src="client-side.js">
-    </script>
-    <script src="ui-controller.js">
-    </script>
-</body>
+            <script src="client-side.js">
+            </script>
+            <script src="ui-controller.js">
+            </script>
+        </body>
 
-</html>
+    </html>
