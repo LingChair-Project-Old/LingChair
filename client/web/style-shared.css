@@ -54,7 +54,7 @@ body {
 }
 
 /* 防止小尺寸图片模糊*/
-     * {
+* {
     image-rendering: -moz-crisp-edges;
     image-rendering: -o-crisp-edges;
     image-rendering: -webkit-optimize-contrast;
@@ -63,13 +63,13 @@ body {
 }
 
 /* 与窗口同大小*/
-    .size-as-window {
+.size-as-window {
     width: var(--window-width);
     height: var(--window-height);
 }
 
 /* Flex - 铺满*/
-    .fill-width {
+.fill-width {
     width: 100%;
 }
 
