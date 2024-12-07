@@ -29,8 +29,6 @@
             rel="stylesheet" />
 
         <!-- Tools -->
-        <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js">
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js">
         </script>
 
@@ -38,21 +36,21 @@
         <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js">
         </script>
 
-        <title>登录到 {{ title }}</title>
+        <title>登录到 铃之椅</title>
 
         <link
-            src="style-shared.css"
+            href="style-shared.css"
             rel="stylesheet" />
 
         <script src="utils-shared.js">
         </script>
     </head>
 
-    <body style="display: flex; flex-direction: column;">
+    <body style="display: flex; flex-direction: column;" id="app">
         <div
             class="size-as-window"
             style="margin-top: calc(var(--window-height) / 2 - 190px); margin-left: 30px; margin-right: 30px;">
-            <h2>登录到 {{ title }}</h2>
+            <h2>登录到 铃之椅</h2>
             <mdui-text-field
                 label="账号"
                 style="margin-top: 30px;">

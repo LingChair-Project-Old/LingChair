@@ -9,12 +9,5 @@
  */
 
 fetch('client_config.json').then((re) => re.json()).then((config) => {
-    window.globalConfig = config
-    Vue.createApp({
-        data() {
-            return {
-                title: config.title,
-            }
-        }
-    }).mount('html')
+    
 })

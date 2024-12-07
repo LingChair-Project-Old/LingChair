@@ -29,8 +29,6 @@
             rel="stylesheet" />
 
         <!-- Tools -->
-        <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js">
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js">
         </script>
         <script src="https://cdn.jsdelivr.net/gh/GoogleChromeLabs/pinch-zoom@1.1.1/dist/pinch-zoom-min.js">
@@ -40,10 +38,10 @@
         <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js">
         </script>
 
-        <title>{{ title }}</title>
+        <title>铃之椅</title>
 
         <link
-            src="style-shared.css"
+            href="style-shared.css"
             rel="stylesheet" />
 
         <script src="utils-shared.js">
@@ -223,7 +221,7 @@
 
         <!-- 主视图 -->
         <!-- 巨坑: 父元素的高度必须小于子元素 否则overflow-y无效!!! 参考: https://blog.csdn.net/Jet_Lover/article/details/121957321 -->
-        <div style="display: flex;">
+        <div style="display: flex;" id="app">
             <style>
                 /* 让侧边栏能多个图标滑动 */
                 mdui-navigation-rail::part(items) {
@@ -371,41 +369,13 @@
                 </div>
             </mdui-navigation-rail>
 
-            <!-- 面板选择 移动端则使用对话框显示代替 -->
-            <!-- <div style="width: 20%;">
-            <mdui-list>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-            </mdui-list>
-        </div> -->
+            <mdui-dialog id="nav-list-information-dialog" close-on-overlay-click="close-on-overlay-click" headline="详细信息">
+                <mdui-list>
+                    <mdui-list-item rounded>Headline</mdui-list-item>
+                    <mdui-list-item rounded>Headline</mdui-list-item>
+                  </mdui-list>
+                  <mdui-button slot="action" variant="text">关闭</mdui-button>
+              </mdui-dialog>
 
             <mdui-dialog
                 close-on-overlay-click="close-on-overlay-click"
@@ -468,7 +438,6 @@
                 </mdui-button-icon>
                 <pinch-zoom
                     id="image-viewer-dialog-inner"
-                    onclick="$('#image-viewer-dialog').get(0).open = false"
                     class="size-as-window">
                 </pinch-zoom>
             </mdui-dialog>

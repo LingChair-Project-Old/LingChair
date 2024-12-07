@@ -22,8 +22,9 @@ const isMobile = () => ('ontouchstart' in document.documentElement)
  * ========================================================
  */
 
-let a = document.createElement('script')
-a.src = "https://unpkg.com/eruda/eruda.js"
-a.onload = () => eruda.init()
-
-isMobile && document.head.appendChild(a)
+if (isMobile()) {
+    let a = document.createElement('script')
+    a.src = "https://unpkg.com/eruda/eruda.js"
+    a.onload = () => eruda.init()
+    document.head.appendChild(a)
+}

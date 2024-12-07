@@ -16,7 +16,7 @@
 
 // 按钮:查看详细列表
 $('#switch-navigation-list-info-menuicon').parent().click(() => {
-
+    $('#nav-list-information-dialog').attr('open', true)
 })
 
 // 切换列表选项
