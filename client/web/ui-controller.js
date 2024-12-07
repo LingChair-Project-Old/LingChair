@@ -26,8 +26,8 @@ $('#switch-navigation-list-menu').on('change', (e) => {
     let value = e.target.value
 
     // 特殊:详细列表
-    console.log(value, lastValue)
     if (value == 0) {
+        // 选回原来的选项
         e.target.value = lastValue
         value = lastValue
         $('#switch-navigation-list-menu > mdui-menu-item[value=' + value + ']').get(0).selected = true
@@ -95,7 +95,7 @@ $('mdui-navigation-rail').on('click', (event) => {
  */
 
 windowOnResizingCallbacks.push((w, h) => {
-    $('#input_message').css('max-width', `${w - ($('mdui-navigation-rail').get(0).getWidth() + $('#send_message').get(0).getWidth() * 2 + 34)}px`)
+    $('#input_message').width(w - ($('mdui-navigation-rail').width() + $('#send_message').width() * 2 + 100))
 })
 
 
