@@ -104,7 +104,10 @@
             display: contents;
         }
     </style>
-    <script src="https://unpkg.com/eruda/eruda.js" onload="eruda.init()">
+    <script>
+        const isMobile = () => ('ontouchstart' in document.documentElement)
+
+        isMobile && $(document.body).append($.parseHTML(`<script` + ` src="https://unpkg.com/eruda/eruda.js" onload="eruda.init()"></scr` + `ipt>`))
     </script>
 </head>
 
@@ -123,6 +126,21 @@
     </template>
     <!-- 普通消息 -->
     <template id="message-normal-template">
+        <style>
+            /* 精准指针设备 令桌面端 */
+            @media (pointer: fine) {
+                #_direction_3 {
+                    max-width: 50%;
+                }
+            }
+
+            /* 不精准指针设备 令移动端 */
+            @media (pointer: coarse) {
+                #_direction_3 {
+                    max-width: 80%;
+                }
+            }
+        </style>
         <div style="display: none;" id="sender-id">
         </div>
         <div id="_direction_1" slot="trigger"
@@ -136,35 +154,34 @@
                 </span>
             </div>
             <mdui-card id="_direction_3" variant="elevated"
-                style="max-width: 80%; min-width: 0%; margin-left: 55px; margin-top: -5px; padding: 15px; align-self: flex-start;">
-                <span id="msg" style="font-size: 94%; max-width: 80%;">
+                style="min-width: 0%; margin-left: 55px; margin-top: -5px; padding: 15px; align-self: flex-start;">
+                <span id="msg" style="font-size: 94%;">
                     <slot>
                     </slot>
                 </span>
             </mdui-card>
         </div>
-        <!-- <mdui-dropdown trigger="contextmenu" open-on-pointer> -->
-        <!-- <mdui-menu> -->
-        <!-- <mdui-menu-item>复制文本<mdui-icon -->
-        <!-- slot="icon" -->
-        <!-- name="copy_all" -->
-        <!-- id="switch-navigation-list-info-menuicon"> -->
-        <!-- </mdui-icon> -->
-        <!-- </mdui-menu-item> -->
-        <!-- <mdui-menu-item>原始文本<mdui-icon -->
-        <!-- slot="icon" -->
-        <!-- name="data_object" -->
-        <!-- id="switch-navigation-list-info-menuicon"> -->
-        <!-- </mdui-icon> -->
-        <!-- </mdui-menu-item> -->
-        <!-- </mdui-menu> -->
-        <!-- </mdui-dropdown> -->
     </template>
     <!-- 系统消息 -->
     <template id="message-system-template">
+        <style>
+            /* 精准指针设备 令桌面端 */
+            @media (pointer: fine) {
+                #msg {
+                    max-width: 50%;
+                }
+            }
+
+            /* 不精准指针设备 令移动端 */
+            @media (pointer: coarse) {
+                #msg {
+                    max-width: 90%;
+                }
+            }
+        </style>
         <div style="width: 100%; flex-direction: column; display: flex; margin-top: 25px; margin-bottom: 20px;">
             <mdui-card variant="filled" id="msg"
-                style="max-width: 90%; align-self: center; padding-top: 9px; padding-bottom: 9px; padding-left: 18px; padding-right: 18px; font-size: 92%;">
+                style="align-self: center; padding-top: 9px; padding-bottom: 9px; padding-left: 18px; padding-right: 18px; font-size: 92%;">
                 <slot>
                 </slot>
             </mdui-card>
@@ -195,7 +212,7 @@
     </script>
 
     <!-- 主视图 -->
-    <div class="size-as-window">
+    <div class="size-as-window" style="display: flex;">
         <style>
             /* 让侧边栏能多个图标滑动 */
             mdui-navigation-rail::part(items) {
@@ -229,73 +246,6 @@
                     <mdui-menu-item value="2">联系人</mdui-menu-item>
                     <mdui-menu-item value="3">群聊</mdui-menu-item>
                 </mdui-menu>
-                <script>
-                    // 正确示范:自行处理onclick
-                    $('#switch-navigation-list-info-menuicon').parent().click(() => {
-
-                    })
-                        // 别试图用这屎山来处理选中 只能处理UI
-                        // 浪费一小时时间调试
-                        // 去你妈的
-                        ; (function () {
-                            // 操你妈 非要这样获取 手动填1会被操死是吧
-                            let lastValue = $('#switch-navigation-list-menu').get(0).value
-
-                            // 切换列表选项
-                            $('#switch-navigation-list-menu').on('change', (e) => {
-                                // 当前选择的值
-                                let value = e.target.value
-
-                                // 特殊:详细列表
-                                console.log(value, lastValue)
-                                // 操你妈的空选择 去你妈的 没选择到都他妈算选择 非要我用lastValue 去你妈的
-                                // 死几把玩意 操你妈的 我用onclick你他妈的满意了吧
-                                // 去你妈的
-                                if (value == 0) {
-                                    e.target.value = lastValue
-                                    value = lastValue
-                                    $('#switch-navigation-list-menu > mdui-menu-item[value=' + value + ']').get(0).selected = true
-                                    $('#switch-navigation-list-menu > mdui-menu-item[value=0]').get(0).selected = false
-                                    // 错误示范: 在这里写点击事件
-                                }
-
-                                // 禁止空选择
-                                if (value == null) {
-                                    e.target.value = lastValue
-                                    value = lastValue
-                                    $('#switch-navigation-list-menu > mdui-menu-item[value=' + value + ']').get(0).selected = true
-                                }
-
-                                // 显示指定的列表
-                                $('#main-navigation-list-1').hide()
-                                $('#main-navigation-list-2').hide()
-                                $('#main-navigation-list-3').hide()
-                                $('#main-navigation-list-' + value).show()
-
-                                // 修改图标
-                                let icon = (function () {
-                                    let ico
-                                    switch (value + '') {
-                                        case "1":
-                                            ico = 'watch_later--outlined'
-                                            break;
-                                        case "2":
-                                            ico = 'contacts--outlined'
-                                            break;
-                                        case "3":
-                                            ico = 'group--outlined'
-                                            break;
-                                    }
-                                    return ico
-                                })()
-                                $('#switch-navigation-list-button').attr('icon', icon)
-                                $('#switch-navigation-list-info-menuicon').attr('name', icon)
-
-                                // 更新最后的值用以防止空选择
-                                lastValue = value
-                            })
-                        })()
-                </script>
             </mdui-dropdown>
 
             <mdui-dropdown slot="bottom" trigger="hover">
@@ -305,12 +255,6 @@
                     <mdui-menu-item onclick="$('#dialog-about').get(0).open = true">关于</mdui-menu-item>
                 </mdui-menu>
             </mdui-dropdown>
-
-            <!-- <mdui-navigation-rail-item icon="watch_later--outlined"></mdui-navigation-rail-item> -->
-            <!-- <mdui-navigation-rail-item icon="contacts--outlined"></mdui-navigation-rail-item> -->
-            <!-- <mdui-navigation-rail-item icon="group--outlined"></mdui-navigation-rail-item> -->
-
-            <!-- <div style="display: contents"> -->
             <div id="main-navigation-list-1" class="contents-only">
                 <main-navigation-item text="满月" img="https://avatars.githubusercontent.com/u/150461955?v=4">
                 </main-navigation-item>
@@ -371,24 +315,43 @@
                 <main-navigation-item text="裙子">
                 </main-navigation-item>
             </div>
-            <script>
-                $('#main-navigation-list-2').hide()
-                $('#main-navigation-list-3').hide()
-            </script>
         </mdui-navigation-rail>
-        <script>
-            $('mdui-navigation-rail').on('click', (event) => {
-                let e = event.target
-                let tagName = e.tagName.toLowerCase()
-                while (tagName != 'main-navigation-item') {
-                    e = e.parentNode
-                    tagName = (e.tagName || 'mdui-navigation-rail').toLowerCase()
-                    if (tagName == 'mdui-navigation-rail') return
-                }
-                // 获取到Item
 
-            })
-        </script>
+        <!-- 面板选择 移动端则使用对话框显示代替 -->
+        <!-- <div style="width: 20%;">
+            <mdui-list>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+                <mdui-list-item rounded>Headline</mdui-list-item>
+            </mdui-list>
+        </div> -->
 
         <mdui-dialog close-on-overlay-click="close-on-overlay-click" id="dialog-about">
             <shadow-inner>
@@ -419,13 +382,6 @@
         <div>
             <mdui-top-app-bar style="position: sticky; /* 好耶 是黏黏的胶水 想被胶水姐姐死死黏住不放~啊~(〃∇〃)姐姐好温柔~~suki♥️ */"
                 scroll-target="#right-contents">
-                <mdui-dropdown trigger="hover">
-                    <mdui-button-icon icon="arrow_drop_down" slot="trigger">
-                    </mdui-button-icon>
-                    <mdui-menu>
-                        <mdui-menu-item>主面板</mdui-menu-item>
-                    </mdui-menu>
-                </mdui-dropdown>
                 <mdui-top-app-bar-title>院审</mdui-top-app-bar-title>
                 <div style="flex-grow: 1">
                 </div>
@@ -485,11 +441,6 @@
                             line-height: 15px;
                         }
                     </style>
-                    <script>
-                        windowOnResizingCallbacks.push((w, h) => {
-                            $('#input_message').css('max-width', `${w - ($('mdui-navigation-rail').get(0).getWidth() + $('#send_message').get(0).getWidth() * 2 + 34)}px`)
-                        })
-                    </script>
                     <mdui-button-icon icon="send" id="send_message">
                     </mdui-button-icon>
                     <mdui-dropdown trigger="hover">
@@ -525,27 +476,6 @@
             </div>
         </div>
     </div>
-
-    <!-- 自适应窗口大小 -->
-    <script>
-        function updateWindowSize() {
-            document.body.style.setProperty('--window-width', `${window.innerWidth}px`)
-            document.body.style.setProperty('--window-height', `${window.innerHeight}px`)
-            windowOnResizingCallbacks.forEach((v) => v(window.innerWidth, window.innerHeight))
-        }
-        $(() => updateWindowSize())
-        window.addEventListener('resize', updateWindowSize)
-
-        // mdui.setColorScheme("#FFB4AA")
-    </script>
-
-    <!-- 为 shadowRoot 添加元素 -->
-    <script>
-        $(() => $('* > shadow-inner').each((_i, v) => {
-            $(v.parentElement.shadowRoot).append(v.children)
-            v.parentNode.removeChild(v)
-        }))
-    </script>
 
     <script src="client-side.js">
     </script>
