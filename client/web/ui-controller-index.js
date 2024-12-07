@@ -16,6 +16,37 @@
 
 // 按钮:查看详细列表
 $('#switch-navigation-list-info-menuicon').parent().click(() => {
+    let list = $('#nav-list-information-dialog > mdui-list').empty()
+    let selected = $('#switch-navigation-list-menu').get(0).value
+    $('#main-navigation-list-' + selected + " > main-navigation-item").each((_i, e) => {
+        let i = $.parseHTML(`<mdui-list-item rounded></mdui-list-item>`)
+        let a = $.parseHTML(`<mdui-avatar slot="icon"></mdui-avatar>`)
+        let img = new Image()
+        img.style.cssText = `width: 100%; height: 100%; object-fit: contain;`
+        img.src = e.getAttribute('img')
+        img.onerror = () => {
+            $(a).text((e.getAttribute('text') || '').substring(0, 1))
+        }
+        $(a).append(img)
+        $(i).append(e.getAttribute('text'))
+        $(i).append(a)
+        list.append(i)
+    })
+    $('#nav-list-information-dialog').attr('headline', (function () {
+        let t
+        switch (selected + '') {
+            case "1":
+                t = '最近'
+                break;
+            case "2":
+                t = '联系人'
+                break;
+            case "3":
+                t = '群组'
+                break;
+        }
+        return t
+    })())
     $('#nav-list-information-dialog').attr('open', true)
 })
 
@@ -90,7 +121,7 @@ $('mdui-navigation-rail').on('click', (event) => {
 
 /**
  * ========================================================
- *                    输入框与消息编辑
+ *                      输入框与消息编辑
  * ========================================================
  */
 
@@ -100,7 +131,20 @@ windowOnResizingCallbacks.push((w, h) => {
 
 /**
  * ========================================================
- *                           图片查看对话框
+ *                        消息列表
+ * ========================================================
+ */
+
+function scrollMessageHolderToBottom() {
+    window.scrollBy({
+        top: 1145141919810,
+        behavior: "smooth",
+    })
+}
+
+/**
+ * ========================================================
+ *                      图片查看对话框
  * ========================================================
  */
 
@@ -114,7 +158,7 @@ function openImageViewer(src) {
         $('#image-viewer-dialog-inner').append($.parseHTML(`<mdui-icon name="broken_image" style="font-size: 2rem;"></mdui-icon>`))
     }
     $('#image-viewer-dialog-inner').append(e)
-    
+
     e.onload = () => $('#image-viewer-dialog-inner').get(0).setTransform({
         scale: 0.6,
         x: $(window).width() / 2 - (e.width / 4),

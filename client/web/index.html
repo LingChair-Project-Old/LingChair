@@ -264,12 +264,17 @@
             </div>
         </mdui-navigation-rail>
 
-        <mdui-dialog id="nav-list-information-dialog" close-on-overlay-click="close-on-overlay-click" headline="详细信息">
+        <mdui-dialog id="nav-list-information-dialog" close-on-overlay-click="close-on-overlay-click">
+            <shadow-inner>
+                <style>
+                    *::-webkit-scrollbar {
+                        width: 0px !important;
+                    }
+                </style>
+            </shadow-inner>
             <mdui-list>
-                <mdui-list-item rounded>Headline</mdui-list-item>
-                <mdui-list-item rounded>Headline</mdui-list-item>
             </mdui-list>
-            <mdui-button slot="action" variant="text">关闭</mdui-button>
+            <mdui-button slot="action" variant="text" onclick="this.parentNode.open = false">关闭</mdui-button>
         </mdui-dialog>
 
         <mdui-dialog close-on-overlay-click="close-on-overlay-click" id="dialog-about">
@@ -322,7 +327,7 @@
             <mdui-button-icon icon="download"
                 onclick="downloadFromUrl($('#image-viewer-dialog-inner > *').attr('src')).catch((e) => mdui.snackbar({message: '无法下载, 也许是被拒绝了吧?', closeOnOutsideClick: true}))">
             </mdui-button-icon>
-            <mdui-button-icon icon="close" onclick="$('#image-viewer-dialog').get(0).open = false">
+            <mdui-button-icon icon="close" onclick="this.parentNode.open = false">
             </mdui-button-icon>
             <pinch-zoom id="image-viewer-dialog-inner" class="size-as-window">
             </pinch-zoom>
