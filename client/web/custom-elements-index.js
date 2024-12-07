@@ -156,6 +156,9 @@ customElements.define('message-img', class extends HTMLElement {
             $(this).html(`<br/><mdui-icon name="broken_image" style="font-size: 2rem;"></mdui-icon>`)
             $(this).attr('alt', '图像损坏')
         }
+        e.onclick = () => {
+            openImageViewer($(this).attr('src'))
+        }
         this.appendChild(e)
     }
 })

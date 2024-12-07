@@ -98,32 +98,44 @@ windowOnResizingCallbacks.push((w, h) => {
     $('#input_message').width(w - ($('mdui-navigation-rail').width() + $('#send_message').width() * 2 + 100))
 })
 
-
 /**
  * ========================================================
- *                         窗口大小
+ *                           图片查看对话框
  * ========================================================
  */
 
-function updateWindowSize() {
-    document.body.style.setProperty('--window-width', `${window.innerWidth}px`)
-    document.body.style.setProperty('--window-height', `${window.innerHeight}px`)
-    windowOnResizingCallbacks.forEach((v) => v(window.innerWidth, window.innerHeight))
+function openImageViewer(src) {
+    $('#image-viewer-dialog-inner').empty()
+
+    let e = new Image()
+    e.src = src
+    e.onerror = () => {
+        $('#image-viewer-dialog-inner').empty()
+        $('#image-viewer-dialog-inner').append($.parseHTML(`<mdui-icon name="broken_image" style="font-size: 2rem;"></mdui-icon>`))
+    }
+    $('#image-viewer-dialog-inner').append(e)
+    
+    e.onload = () => $('#image-viewer-dialog-inner').get(0).setTransform({
+        scale: 0.6,
+        x: $(window).width() / 2 - (e.width / 4),
+        y: $(window).height() / 2 - (e.height / 3),
+    })
+    $('#image-viewer-dialog').get(0).open = true
 }
-$(() => updateWindowSize())
-window.addEventListener('resize', updateWindowSize)
 
 /**
  * ========================================================
- *                  Shadow 元素辅助代码
+ *                           下载
  * ========================================================
  */
 
-// 将组件添加到影子DOM中
-$(() => $('* > shadow-inner').each((_i, v) => {
-    $(v.parentElement.shadowRoot).append(v.children)
-    v.parentNode.removeChild(v)
-}))
+async function downloadFromUrl(src) {
+    let re = await fetch(src)
+    let blob = await re.blob()
+    let url = URL.createObjectURL(blob)
+    $('#download-helper').attr('download', url).attr('href', url).get(0).click()
+    setTimeout(() => URL.revokeObjectURL(url), 10000)
+}
 
 /**
  * ========================================================

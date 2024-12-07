@@ -15,7 +15,7 @@ import * as HttpApi from './HttpApi.js'
 import vals from './vals.js'
 
 if (process.argv.includes('--start-server')) {
-    HttpApi.httpServer.listen(vals.LINGCHAIR_SERVER_CONFIG.port, vals.LINGCHAIR_SERVER_CONFIG.bindAddress)
+    HttpApi.httpServer.listen(vals.serverConfig.port, vals.serverConfig.bindAddress)
 }
 
 export default HttpApi

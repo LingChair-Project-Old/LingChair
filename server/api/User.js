@@ -60,7 +60,7 @@ export default class User {
      * @returns { String } 数据目录
      */
     static getDataPath(id) {
-        return vals.LINGCHAIR_DATA_DIR + "/users/" + id
+        return vals.dataDir + "/users/" + id
     }
     /**
      * 获取此账号使用的数据目录

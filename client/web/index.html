@@ -33,103 +33,28 @@
         </script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js">
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js">
+        <script src="https://cdn.jsdelivr.net/gh/GoogleChromeLabs/pinch-zoom@1.1.1/dist/pinch-zoom-min.js">
         </script>
 
         <!-- Connection -->
         <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js">
         </script>
 
-        <title>铃之椅</title>
+        <title>{{ title }}</title>
 
-        <!-- 滑条 -->
-        <style>
-            .no-scroll-bar::-webkit-scrollbar {
-                width: 0px !important;
-            }
-    
-            /* https://blog.csdn.net/qq_39347364/article/details/111996581 */
-            *::-webkit-scrollbar {
-                width: 7px;
-                height: 10px;
-            }
-    
-            *::-webkit-scrollbar-track {
-                width: 6px;
-                background: rgba(#101F1C, 0.1);
-                -webkit-border-radius: 2em;
-                -moz-border-radius: 2em;
-                border-radius: 2em;
-            }
-    
-            *::-webkit-scrollbar-thumb {
-                background-color: rgba(144, 147, 153, .5);
-                background-clip: padding-box;
-                min-height: 28px;
-                -webkit-border-radius: 2em;
-                -moz-border-radius: 2em;
-                border-radius: 2em;
-                transition: background-color .3s;
-                cursor: pointer;
-            }
-    
-            *::-webkit-scrollbar-thumb:hover {
-                background-color: rgba(144, 147, 153, .3);
-            }
-        </style>
+        <link
+            src="style-shared.css"
+            rel="stylesheet" />
 
-        <!-- 其他样式 -->
-        <style>
-            body {
-                display: flex;
-                margin: 0 0 0 0;
-            }
-    
-            /* 防止小尺寸图片模糊 */
-            * {
-                image-rendering: -moz-crisp-edges;
-                image-rendering: -o-crisp-edges;
-                image-rendering: -webkit-optimize-contrast;
-                image-rendering: crisp-edges;
-                -ms-interpolation-mode: nearest-neighbor;
-            }
-    
-            /* 与窗口同大小 */
-            .size-as-window {
-                width: var(--window-width);
-                height: var(--window-height);
-            }
-    
-            /* Flex - 铺满 */
-            .fill-width {
-                width: 100%;
-            }
-    
-            .fill-height {
-                height: 100%;
-            }
-    
-            /* 链接使用主题色 */
-            a {
-                color: rgb(var(--mdui-color-primary));
-            }
-    
-            .contents-only {
-                display: contents;
-            }
-        </style>
+        <script src="utils-shared.js">
+        </script>
     </head>
 
-    <body >
-        <script>
-            const isMobile = () => ('ontouchstart' in document.documentElement)
-
-            let a = document.createElement('script')
-            a.src = "https://unpkg.com/eruda/eruda.js"
-            a.onload = () => eruda.init()
-
-            isMobile && document.head.appendChild(a)
-        </script>
+    <body>
+        <a
+            id="download-helper"
+            style="display: none;">
+        </a>
         <!-- 自定义元素 -->
         <!-- 消息列表容器 -->
         <template id="message-holder-template">
@@ -293,19 +218,8 @@
             </mdui-tooltip>
         </template>
 
-        <script src="custom-elements.js">
+        <script src="custom-elements-index.js">
         </script>
-
-        <!-- 自适应窗口大小 - 辅助 -->
-        <script>
-                // 在窗口加载完毕后会将所有页面大小变化的回调都调用一次
-                const windowOnResizingCallbacks = []
-        
-                // 本质上不应该这么做 但是调用起来会更方便
-                // 如果有新的标准出现 那么这个应该要被废除
-                HTMLElement.prototype.getWidth = function () { return this.clientWidth }
-                HTMLElement.prototype.getHeight = function () { return this.clientHeight }
-            </script>
 
         <!-- 主视图 -->
         <!-- 巨坑: 父元素的高度必须小于子元素 否则overflow-y无效!!! 参考: https://blog.csdn.net/Jet_Lover/article/details/121957321 -->
@@ -523,6 +437,42 @@
                 </div>
             </mdui-dialog>
 
+            <style>
+                #image-viewer-dialog::part(panel) {
+                    background: rgba(0, 0, 0, 0) !important;
+                    padding: 0 !important;
+                }
+                #image-viewer-dialog > mdui-button-icon[icon=close] {
+                    z-index: 114514;
+                    position: fixed;
+                    top: 15px;
+                    right: 15px;
+                }
+                #image-viewer-dialog > mdui-button-icon[icon=download] {
+                    z-index: 114514;
+                    position: fixed;
+                    top: 15px;
+                    right: 65px;
+                }
+            </style>
+            <mdui-dialog
+                id="image-viewer-dialog"
+                fullscreen="fullscreen">
+                <mdui-button-icon
+                    icon="download"
+                    onclick="downloadFromUrl($('#image-viewer-dialog-inner > *').attr('src')).catch((e) => mdui.snackbar({message: '无法下载, 也许是被拒绝了吧?', closeOnOutsideClick: true}))">
+                </mdui-button-icon>
+                <mdui-button-icon
+                    icon="close"
+                    onclick="$('#image-viewer-dialog').get(0).open = false">
+                </mdui-button-icon>
+                <pinch-zoom
+                    id="image-viewer-dialog-inner"
+                    onclick="$('#image-viewer-dialog').get(0).open = false"
+                    class="size-as-window">
+                </pinch-zoom>
+            </mdui-dialog>
+
             <div
                 id="right-contents"
                 style="flex-grow: 1; overflow-y: visible; position:relative;">
@@ -685,7 +635,12 @@
 
         <script src="client-side.js">
         </script>
-        <script src="ui-controller.js">
+        <script src="ui-controller-shared.js">
+        </script>
+        <script src="ui-controller-index.js">
+        </script>
+        
+        <script src="global-appconfig.js">
         </script>
     </body>
 

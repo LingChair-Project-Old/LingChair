@@ -12,6 +12,7 @@ import express from 'express'
 import * as SocketIo from 'socket.io'
 import http from 'node:http'
 import https from 'node:https'
+import process from 'node:process'
 
 import User from './api/User.js'
 
@@ -55,11 +56,11 @@ const app = express()
 
 app.use('/', express.static('./client/web/'))
 
-app.put('/lingchair/user/:userId/username', (req, res) => {
-    req.params.userId - req.headers['LingChair-Auth']
+app.get('/client_config.json', (req, res) => {
+    res.sendFile(vals.configDir + "/client_config.json", { root: process.cwd() })
 })
 
-const httpServer = vals.LINGCHAIR_SERVER_CONFIG.useHttps ? https.createServer(vals.LINGCHAIR_SERVER_CONFIG.https, app) : http.createServer(app)
+const httpServer = vals.serverConfig.useHttps ? https.createServer(vals.serverConfig.https, app) : http.createServer(app)
 
 const io = new SocketIo.Server(httpServer, {})
 

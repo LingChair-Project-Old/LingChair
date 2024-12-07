@@ -60,7 +60,7 @@ export default class MessageList {
      * @returns { String } path
      */
     static getDataPath(id) {
-        return vals.LINGCHAIR_DATA_DIR + "/messages/" + id
+        return vals.dataDir + "/messages/" + id
     }
 
     // ==================================================
